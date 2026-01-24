@@ -248,6 +248,19 @@
             gap: 8px;
         }
 
+        .or-button-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .or-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-slate-500);
+            text-transform: uppercase;
+        }
+
 
 /* Base layout for all doc-link buttons */
 .doc-link {
@@ -577,15 +590,23 @@
                                 <span class="doc-main">📝 My Reply</span>
                                 <span class="doc-date">18 Jan 2026</span>
                         </a>
-                        <a href="https://mydhl.express.dhl/us/en/tracking.html#/results?id=JD014600012485221978" class="doc-link" target="_blank">
-                                <span class="doc-main">🚙 DHL+ Tracking**</span>
+                        <div class="or-button-group">
+                            <a href="https://mydhl.express.dhl/us/en/tracking.html#/results?id=JD014600012485221978"
+                            class="doc-link doc-link-primary"
+                            target="_blank" rel="noopener noreferrer">
+                                <span class="doc-main">DHL+ Tracking**</span>
                                 <span class="doc-date">18 Jan 2026</span>
-                        </a>
-                        <a href="https://www.dhl.com/th-en/home/tracking.html?tracking-id=JD014600012485221978&submit=1&inputsource=marketingstage" class="doc-link" target="_blank">
-                                <span class="doc-main">🚙 DHL-TH Tracking**</span>
+                            </a>
+
+                            <span class="or-label">OR</span>
+
+                            <a href="https://www.dhl.com/th-en/home/tracking.html?tracking-id=JD014600012485221978"
+                            class="doc-link"
+                            target="_blank" rel="noopener noreferrer">
+                                <span class="doc-main">DHL–TH Tracking**</span>
                                 <span class="doc-date">18 Jan 2026</span>
-                        </a>
-                        <a href="https://drive.google.com/file/d/1bsjymcGKdW3UhEeykr3CVuTcN_npYXgw/view?usp=drive_link" class="doc-link" target="_blank">
+                            </a>
+                        </div>                        <a href="https://drive.google.com/file/d/1bsjymcGKdW3UhEeykr3CVuTcN_npYXgw/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📧 Response</span>
                                 <span class="doc-date">19 Jan 2026</span>
                         </a>
