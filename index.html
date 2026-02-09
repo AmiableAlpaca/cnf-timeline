@@ -1485,16 +1485,20 @@
     }
 
 
-    // Show/hide "Back to Top" button after scrolling (test version)
+    // Show/hide "Back to Top" button after scrolling
     var backToTop = document.getElementById('backToTop');
     window.addEventListener('scroll', function () {
-        backToTop.classList.add('visible');
+        if (window.scrollY > 10) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
     });
 
     // ----------------------------------------
     // END NEW
 })();
 </script>
-<a href="#top" class="back-to-top" id="backToTop">Top ↑</a>
+<a href="#top" class="back-to-top visible" id="backToTop">Top ↑</a>
 </body>
 </html>
