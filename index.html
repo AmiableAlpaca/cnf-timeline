@@ -1485,20 +1485,32 @@
     }
 
 
-    // Show/hide "Back to Top" button after scrolling
+    // Show/hide "Back to Top" button based on top marker visibility
     var backToTop = document.getElementById('backToTop');
-    window.addEventListener('scroll', function () {
-        if (window.scrollY > 10) {
-            backToTop.classList.add('visible');
-        } else {
-            backToTop.classList.remove('visible');
-        }
-    });
+    var topMarker = document.getElementById('top');
+
+    if (backToTop && topMarker && 'IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    // Top of page is visible → hide button
+                    backToTop.classList.remove('visible');
+                } else {
+                    // Top of page is not visible → show button
+                    backToTop.classList.add('visible');
+                }
+            });
+        });
+        observer.observe(topMarker);
+    } else {
+        // Fallback: always show
+        backToTop.classList.add('visible');
+    }
 
     // ----------------------------------------
     // END NEW
 })();
 </script>
-<a href="#top" class="back-to-top visible" id="backToTop">Top ↑</a>
+<a href="#top" class="back-to-top" id="backToTop">Top ↑</a>
 </body>
 </html>
