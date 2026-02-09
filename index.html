@@ -409,6 +409,22 @@
                 left: 15px;
             }
 
+        /* Show the Top button only on narrow/mobile viewports */
+        @media (max-width: 768px) {
+            .back-to-top {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+
+        /* Hide it on wider/desktop viewports */
+        @media (min-width: 769px) {
+            .back-to-top {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
             .timeline-item {
                 padding-left: 60px;
             }
