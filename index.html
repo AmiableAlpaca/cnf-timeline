@@ -211,20 +211,19 @@
         }
 
         .back-to-top {
-        position: fixed;
-        right: 20px;
-        bottom: 20px;
-        background: var(--color-teal-500);
-        color: var(--color-white);
-        padding: 8px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        text-decoration: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease-in-out;
-        z-index: 1000;
+            position: fixed;
+            left: 20px;       /* moved to top-left for testing */
+            top: 20px;
+            background: red;  /* bright red for visibility */
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            opacity: 1;           /* force visible */
+            pointer-events: auto; /* clickable */
+            z-index: 1000;
         }
 
         .back-to-top.visible {
