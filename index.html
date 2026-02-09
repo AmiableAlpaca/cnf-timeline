@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CNF Document Collection Timeline</title>
-    <style>
+<style>
         :root {
             --color-white: rgba(255, 255, 255, 1);
             --color-cream-50: rgba(252, 252, 249, 1);
@@ -211,29 +211,29 @@
         }
 
         .back-to-top {
-        position: fixed;
-        right: 20px;
-        bottom: 20px;
-        background: var(--color-teal-500);
-        color: var(--color-white);
-        padding: 8px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        text-decoration: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease-in-out;
-        z-index: 1000;
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: var(--color-teal-500);
+            color: var(--color-white);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-in-out;
+            z-index: 1000;
         }
 
         .back-to-top.visible {
-        opacity: 1;
-        pointer-events: auto;
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .back-to-top:hover {
-        background: var(--color-teal-600);
+            background: var(--color-teal-600);
         }
 
         .document-links {
@@ -409,22 +409,6 @@
                 left: 15px;
             }
 
-        /* Show the Top button only on narrow/mobile viewports */
-        @media (max-width: 768px) {
-            .back-to-top {
-                opacity: 1;
-                pointer-events: auto;
-            }
-        }
-
-        /* Hide it on wider/desktop viewports */
-        @media (min-width: 769px) {
-            .back-to-top {
-                opacity: 0;
-                pointer-events: none;
-            }
-        }
-
             .timeline-item {
                 padding-left: 60px;
             }
@@ -438,6 +422,26 @@
 
             h1 {
                 font-size: 20px;
+            }
+        }
+
+        /* Show the Top button only on narrow/mobile viewports */
+        @media (max-width: 768px) {
+            .back-to-top {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .back-to-top.visible {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+
+        /* Hide it completely on wider/desktop viewports */
+        @media (min-width: 769px) {
+            .back-to-top {
+                opacity: 0;
+                pointer-events: none;
             }
         }
 
@@ -563,7 +567,7 @@
             margin-left: 2px;           /* gap from preceding text */
         }
         /* END NEW */
-    </style>
+</style>
 </head>
 <body>
       <a id="top"></a>
@@ -1381,6 +1385,7 @@
         </div>
     </div>
 
+<a href="#top" class="back-to-top" id="backToTop">Top ↑</a>
 <script>
 (function () {
     console.log('CNF timeline script starting');
@@ -1535,6 +1540,5 @@
     // END NEW
 })();
 </script>
-<a href="#top" class="back-to-top" id="backToTop">Top ↑</a>
 </body>
 </html>
