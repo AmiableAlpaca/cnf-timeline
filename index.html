@@ -1383,7 +1383,9 @@
 
 <script>
 (function () {
-     // 1) Day counters
+    console.log('CNF timeline script starting');
+
+    // 1) Day counters
     var today = new Date();
     today.setHours(0, 0, 0, 0);
     var msPerDay = 24 * 60 * 60 * 1000;
@@ -1508,6 +1510,7 @@
     if (backToTop && headerEl && 'IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
+                console.log('Header intersecting:', entry.isIntersecting, 'ratio:', entry.intersectionRatio);
                 if (entry.isIntersecting) {
                     // Header is visible → hide button
                     backToTop.classList.remove('visible');
@@ -1518,10 +1521,12 @@
             });
         }, {
             root: null,        // viewport
-            threshold: 0.1     // treat as \"visible\" if at least 10% is in view
+            threshold: 0.1     // treat as "visible" if at least 10% is in view
         });
+        console.log('Observing header for Top button visibility');
         observer.observe(headerEl);
     } else {
+        console.log('Observer not available or elements missing; showing Top by default');
         // Fallback: always show
         backToTop.classList.add('visible');
     }
