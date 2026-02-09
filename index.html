@@ -552,7 +552,7 @@
 <body>
       <a id="top"></a>
       <div class="container">
-        <header>
+        <header id="page-header">
             <h1>French Nationality Certificate Journey</h1>
             <div class="file-number">File: CNF 11411/2025 | Tribunal judiciaire de Paris</div>
         </header>
@@ -1485,23 +1485,26 @@
     }
 
 
-    // Show/hide "Back to Top" button based on top marker visibility
+    // Show/hide "Back to Top" button based on header visibility
     var backToTop = document.getElementById('backToTop');
-    var topMarker = document.getElementById('top');
+    var headerEl  = document.getElementById('page-header');
 
-    if (backToTop && topMarker && 'IntersectionObserver' in window) {
+    if (backToTop && headerEl && 'IntersectionObserver' in window) {
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
-                    // Top of page is visible → hide button
+                    // Header is visible → hide button
                     backToTop.classList.remove('visible');
                 } else {
-                    // Top of page is not visible → show button
+                    // Header is not visible → show button
                     backToTop.classList.add('visible');
                 }
             });
+        }, {
+            root: null,        // viewport
+            threshold: 0.1     // treat as \"visible\" if at least 10% is in view
         });
-        observer.observe(topMarker);
+        observer.observe(headerEl);
     } else {
         // Fallback: always show
         backToTop.classList.add('visible');
