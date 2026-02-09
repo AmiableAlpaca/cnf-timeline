@@ -210,6 +210,32 @@
             text-transform: uppercase;
         }
 
+        .back-to-top {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        background: var(--color-teal-500);
+        color: var(--color-white);
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+        text-decoration: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+        z-index: 1000;
+        }
+
+        .back-to-top.visible {
+        opacity: 1;
+        pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+        background: var(--color-teal-600);
+        }
+
         .document-links {
             margin-top: 10px;
             display: flex;
@@ -524,7 +550,8 @@
     </style>
 </head>
 <body>
-    <div class="container">
+      <a id="top"></a>
+      <div class="container">
         <header>
             <h1>French Nationality Certificate Journey</h1>
             <div class="file-number">File: CNF 11411/2025 | Tribunal judiciaire de Paris</div>
@@ -1456,9 +1483,22 @@
         markStep('ti-step-receipt', 'completed');
         markStep('ti-step-deadline', 'current');
     }
+
+
+    // Show/hide "Back to Top" button after scrolling
+    var backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+
     // ----------------------------------------
     // END NEW
 })();
 </script>
+<a href="#top" class="back-to-top" id="backToTop">Top ↑</a>
 </body>
 </html>
