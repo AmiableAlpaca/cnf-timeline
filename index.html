@@ -567,6 +567,74 @@
             margin-left: 2px;           /* gap from preceding text */
         }
         /* END NEW */
+
+        /* ── Dark mode ─────────────────────────────────────────────────── */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-white:        rgba(37,  40,  40,  1); /* card bg          */
+                --color-cream-50:     rgba(22,  24,  24,  1); /* body bg          */
+                --color-cream-100:    rgba(30,  33,  33,  1); /* subtle bg        */
+                --color-gray-300:     rgba(78,  85,  85,  1); /* borders/pending  */
+                --color-slate-500:    rgba(155, 165, 170, 1); /* secondary text   */
+                --color-charcoal-700: rgba(228, 232, 232, 1); /* primary text     */
+                --color-teal-500:     rgba(48,  162, 178, 1); /* accent (brighter)*/
+                --color-teal-600:     rgba(42,  147, 162, 1);
+                --color-orange-500:   rgba(210, 100,  65, 1);
+                --color-purple-500:   rgba(158, 118, 235, 1);
+                --color-green-600:    rgb(0,   185,  95);
+            }
+
+            /* Deepen card shadow so elevation reads on dark surfaces */
+            .timeline-content {
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            }
+
+            /* Hardcoded semi-transparent fills that variables can't reach */
+            .timeline-contact {
+                background: rgba(48, 162, 178, 0.12);
+            }
+
+            .timeline-infographic {
+                background: rgba(48, 162, 178, 0.07);
+            }
+
+            .ti-bar::before {
+                background: rgba(48, 162, 178, 0.30);
+            }
+
+            .ti-step-dot {
+                box-shadow: 0 0 0 2px rgba(48, 162, 178, 0.20);
+            }
+
+            .summary {
+                background: rgba(48, 162, 178, 0.10);
+            }
+
+            .status-completed {
+                background: rgba(48, 162, 178, 0.20);
+            }
+
+            .status-pending {
+                background: rgba(78, 85, 85, 0.25);
+            }
+
+            .status-awaiting {
+                background: rgba(210, 100, 65, 0.20);
+            }
+
+            .status-enroute {
+                background: rgba(0, 185, 95, 0.18);
+            }
+
+            .status-delivery {
+                background: rgba(158, 118, 235, 0.20);
+            }
+
+            .doc-link-enroute {
+                background: rgba(0, 185, 95, 0.15);
+            }
+        }
+        /* ── END Dark mode ──────────────────────────────────────────────── */
 </style>
 </head>
 <body>
