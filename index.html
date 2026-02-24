@@ -674,7 +674,7 @@
                     </a>
                     <div class="ti-step-label">Récépissé / acknowledgement</div>
                     <div class="ti-step-date" id="ti-date-receipt">
-                        before ≈30 Mar 2026<span aria-hidden="true" class="ti-footnote">b</span>
+                        24 Feb 2026<span aria-hidden="true" class="ti-footnote">b</span>
                     </div>
                 </div>
                 <div class="ti-step" id="ti-step-deadline">
@@ -1508,7 +1508,7 @@
     // Same dates you are using elsewhere
     var requestDate  = new Date(2025, 10, 27); // 27 Nov 2025 (month 0-based)
     var deliveryDate = new Date(2026, 1, 2);   // 2 Feb 2026
-    var recepisse    = new Date(2026, 2, 30);  // 30 Mar 2026 (assumed)
+    var recepisse    = new Date(2026, 1, 24);  // 24 Feb 2026
     requestDate.setHours(0, 0, 0, 0);
     deliveryDate.setHours(0, 0, 0, 0);
     recepisse.setHours(0, 0, 0, 0);
@@ -1524,10 +1524,11 @@
     // Show days since receipt of Récépissé in the infographic footer
     var tiDaysEl = document.getElementById('ti-days-since');
     if (tiDaysEl) {
-        if (diffReplyDays >= 0) {
-            tiDaysEl.textContent = diffReplyDays + ' days';
+        var diffRecepisseDays = Math.round((today - recepisse) / msPerDay);
+        if (diffRecepisseDays >= 0) {
+            tiDaysEl.textContent = diffRecepisseDays + ' days';
         } else {
-            tiDaysEl.textContent = 'Not yet delivered';
+            tiDaysEl.textContent = 'Not yet received';
         }
     }
 
