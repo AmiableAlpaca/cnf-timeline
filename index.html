@@ -664,7 +664,7 @@
                         <div class="ti-step-dot"></div>
                     </a>
                     <div class="ti-step-label">
-                        Reply delivered / awaiting response<span aria-hidden="true" class="ti-footnote">a</span>
+                        Reply delivered<span aria-hidden="true" class="ti-footnote">a</span>
                     </div>
                     <div class="ti-step-date" id="ti-date-delivery">2 Feb 2026</div>
                 </div>
@@ -688,9 +688,9 @@
                 </div>
             </div>
             <div class="ti-footer">
-                <span aria-hidden="true" class="ti-footnote">a</span>
-                <span class="ti-highlight" id="ti-days-since"></span> since reply delivered ·
-                <span aria-hidden="true" class="ti-footnote">b</span> Récépissé likely seven to 56 days after delivery ·
+                <span aria-hidden="true" class="ti-footnote">a</span> XX days before deadline ·
+                <span aria-hidden="true" class="ti-footnote">b</span>
+                <span class="ti-highlight" id="ti-days-since"></span> since receipt of Récépissé ·
                 <span aria-hidden="true" class="ti-footnote">c</span> Decision period: 6 months from récépissé, with up to two 6‑month extensions.
         </div>
         </div>
@@ -1521,7 +1521,7 @@
         return d.toLocaleDateString(undefined, options);
     }
 
-    // Show days since reply delivered in the infographic footer
+    // Show days since receipt of Récépissé in the infographic footer
     var tiDaysEl = document.getElementById('ti-days-since');
     if (tiDaysEl) {
         if (diffReplyDays >= 0) {
