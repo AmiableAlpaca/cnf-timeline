@@ -1563,10 +1563,11 @@
         markStep('ti-step-request', 'completed');
         markStep('ti-step-delivery', 'current');
     } else if (today >= recepisse && today < decisionEnd) {
-        // Récépissé received; in decision period
+        // Récépissé received; awaiting decision
         markStep('ti-step-request', 'completed');
         markStep('ti-step-delivery', 'completed');
-        markStep('ti-step-receipt', 'current');
+        markStep('ti-step-receipt', 'completed');
+        markStep('ti-step-deadline', 'current');
     } else {
         // After initial decision window end date
         markStep('ti-step-request', 'completed');
