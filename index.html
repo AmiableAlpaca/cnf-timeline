@@ -649,7 +649,7 @@
         <div class="timeline-infographic">
             <div class="ti-title">Tribunal Timeline Overview</div>
             <div class="ti-subtitle">
-                Next steps and timing from the Tribunal request for additional documentation to the expected end of the decision period. For more information, click on any dot in this Overview to go to the associated process step in the detailed timeline below.
+                Timeline from the Tribunal's request for additional documentation through the decision. The Tribunal issued a refusal on 25 Feb 2026. For more information, click on any dot in this Overview to go to the associated process step in the detailed timeline below.
             </div>
             <div class="ti-bar">
                 <div class="ti-step" id="ti-step-request">
@@ -682,7 +682,7 @@
                         <div class="ti-step-dot"></div>
                     </a>
                     <div class="ti-step-label">
-                        Decision expected<span aria-hidden="true" class="ti-footnote">c</span>
+                        Decision received<span aria-hidden="true" class="ti-footnote">c</span>
                     </div>
                     <div class="ti-step-date" id="ti-date-deadline">To be calculated</div>
                 </div>
@@ -691,7 +691,7 @@
                 <span aria-hidden="true" class="ti-footnote">a</span> 25 days before deadline ·
                 <span aria-hidden="true" class="ti-footnote">b</span>
                 <span class="ti-highlight" id="ti-days-since"></span> since receipt of Récépissé ·
-                <span aria-hidden="true" class="ti-footnote">c</span> Decision period: 6 months from récépissé, with up to two 6‑month extensions.
+                <span aria-hidden="true" class="ti-footnote">c</span> Decision received 25 Feb 2026 — 1 day after Récépissé. 6-month appeal period now running.
         </div>
         </div>
         <!-- END NEW -->
@@ -1371,27 +1371,23 @@
             </div>
 
             <!-- Tribunal Decision -->
-            <div class="timeline-item pending" id="timeline-20">
+            <div class="timeline-item completed" id="timeline-20">
                 <div class="timeline-marker">20</div>
                 <div class="timeline-content">
-                    <div class="timeline-date">Expected between 24 Aug 2026 and 24 Aug 2027</div>
-                    <div class="timeline-title">Tribunal Decision Regarding CNF Issuance </div>
-                    <div class="timeline-description">Decision and issuance of the CNF occur commonly within 6 months after the récépissé, though some files extend beyond this when the tribunal formally prolongs the investigation. Once the a récépissé is received, the “clock starts” to count the 6‑month instruction period from its date; if by the end of that period there still is no decision, that silence is treated as a refusal and the applicant then has a 6 month period to file an appeal with legal representation if the applicant wishes to contest the decision. <br> <strong>Outcome:</strong> Two possibilities: (1) Tribunal grants and issues the CNF to the applicant, or (2) the Tribunal does not grant the CNF (silence is treated as refusal).</div>
-                    <div class="timeline-status status-pending">🏆 Future</div>
+                    <div class="timeline-date">25 Feb 2026</div>
+                    <div class="timeline-title">Tribunal Refuses CNF</div>
+                    <div class="timeline-description">The Tribunal judiciaire de Paris issued a formal refusal of the CNF on 25 Feb 2026, one day after the Récépissé. The applicant now has a 6-month period (from the date of the decision) to file an appeal before the cour d'appel, which requires legal representation. <br> <strong>Outcome:</strong> CNF refused. Appeal period running.</div>
+                    <div class="timeline-status status-awaiting">✗ Refused</div>
                     <div class="document-links">
                         <!-- Buttons for communications -->
-                        <a href="..." class="doc-link" target="_blank">
-                                <span class="doc-main">📧 FUTURE CNF Outcome</span>
-                                <span class="doc-date">XX XXX 202X</span>
+                        <a href="https://drive.google.com/file/d/1PAOvPQXt7GYbdEmeXNg-8XZ-99qFVD2B/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Decision Email</span>
+                                <span class="doc-date">25 Feb 2026</span>
                         </a>
-                        <!-- <a href="..." class="doc-link" target="_blank">
-                                <span class="doc-main">📧 Response</span>
-                                <span class="doc-date">XX XXX 2026</span>
+                        <a href="https://drive.google.com/file/d/1BKNaREcgBWBeckwAO2NnnXbFJUcyO8tV/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Decision Letter</span>
+                                <span class="doc-date">25 Feb 2026</span>
                         </a>
-                        <a href="..." class="doc-link" target="_blank">
-                                <span class="doc-main">📝 My Reply</span>
-                                <span class="doc-date">XX XXX 2026</span>
-                        </a> -->
                     </div>
                 </div>
             </div>
@@ -1506,12 +1502,14 @@
     // NEW: JS to drive the horizontal timeline
     // ----------------------------------------
     // Same dates you are using elsewhere
-    var requestDate  = new Date(2025, 10, 27); // 27 Nov 2025 (month 0-based)
-    var deliveryDate = new Date(2026, 1, 2);   // 2 Feb 2026
-    var recepisse    = new Date(2026, 1, 24);  // 24 Feb 2026
+    var requestDate   = new Date(2025, 10, 27); // 27 Nov 2025 (month 0-based)
+    var deliveryDate  = new Date(2026, 1, 2);   // 2 Feb 2026
+    var recepisse     = new Date(2026, 1, 24);  // 24 Feb 2026
+    var decisionDate  = new Date(2026, 1, 25);  // 25 Feb 2026
     requestDate.setHours(0, 0, 0, 0);
     deliveryDate.setHours(0, 0, 0, 0);
     recepisse.setHours(0, 0, 0, 0);
+    decisionDate.setHours(0, 0, 0, 0);
 
     var decisionEnd = new Date(recepisse.getTime());
     decisionEnd.setMonth(decisionEnd.getMonth() + 6);
@@ -1532,10 +1530,10 @@
         }
     }
 
-    // Set decision end date text
+    // Set decision date text
     var deadlineEl = document.getElementById('ti-date-deadline');
     if (deadlineEl) {
-        deadlineEl.textContent = formatPhaseDate(decisionEnd) + ' (initial 6‑month deadline)';
+        deadlineEl.textContent = '25 Feb 2026';
     }
 
     // Highlight current step with legend-aligned colours
@@ -1555,21 +1553,21 @@
     ['ti-step-request','ti-step-delivery','ti-step-receipt','ti-step-deadline']
         .forEach(function(id) { markStep(id, null); });
 
-    if (today < deliveryDate) {
+    if (today >= decisionDate) {
+        // Decision received — all steps complete
+        markStep('ti-step-request', 'completed');
+        markStep('ti-step-delivery', 'completed');
+        markStep('ti-step-receipt', 'completed');
+        markStep('ti-step-deadline', 'completed');
+    } else if (today < deliveryDate) {
         // CNF request sent by Tribunal, applicant preparing reply
         markStep('ti-step-request', 'current');
     } else if (today >= deliveryDate && today < recepisse) {
         // Reply delivered; waiting for récépissé
         markStep('ti-step-request', 'completed');
         markStep('ti-step-delivery', 'current');
-    } else if (today >= recepisse && today < decisionEnd) {
+    } else if (today >= recepisse && today < decisionDate) {
         // Récépissé received; awaiting decision
-        markStep('ti-step-request', 'completed');
-        markStep('ti-step-delivery', 'completed');
-        markStep('ti-step-receipt', 'completed');
-        markStep('ti-step-deadline', 'current');
-    } else {
-        // After initial decision window end date
         markStep('ti-step-request', 'completed');
         markStep('ti-step-delivery', 'completed');
         markStep('ti-step-receipt', 'completed');
