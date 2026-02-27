@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CNF Document Collection Timeline</title>
-    <style>
+<style>
         :root {
             --color-white: rgba(255, 255, 255, 1);
             --color-cream-50: rgba(252, 252, 249, 1);
@@ -210,6 +210,32 @@
             text-transform: uppercase;
         }
 
+        .back-to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: var(--color-teal-500);
+            color: var(--color-white);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease-in-out;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background: var(--color-teal-600);
+        }
+
         .document-links {
             margin-top: 10px;
             display: flex;
@@ -399,6 +425,26 @@
             }
         }
 
+        /* Show the Top button only on narrow/mobile viewports */
+        @media (max-width: 768px) {
+            .back-to-top {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .back-to-top.visible {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+
+        /* Hide it completely on wider/desktop viewports */
+        @media (min-width: 769px) {
+            .back-to-top {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
         /* NEW: horizontal infographic timeline CSS */
         .timeline-infographic {
             margin: 20px 0 30px;
@@ -521,11 +567,80 @@
             margin-left: 2px;           /* gap from preceding text */
         }
         /* END NEW */
-    </style>
+
+        /* ── Dark mode ─────────────────────────────────────────────────── */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-white:        rgba(37,  40,  40,  1); /* card bg          */
+                --color-cream-50:     rgba(22,  24,  24,  1); /* body bg          */
+                --color-cream-100:    rgba(30,  33,  33,  1); /* subtle bg        */
+                --color-gray-300:     rgba(78,  85,  85,  1); /* borders/pending  */
+                --color-slate-500:    rgba(155, 165, 170, 1); /* secondary text   */
+                --color-charcoal-700: rgba(228, 232, 232, 1); /* primary text     */
+                --color-teal-500:     rgba(48,  162, 178, 1); /* accent (brighter)*/
+                --color-teal-600:     rgba(42,  147, 162, 1);
+                --color-orange-500:   rgba(210, 100,  65, 1);
+                --color-purple-500:   rgba(158, 118, 235, 1);
+                --color-green-600:    rgb(0,   185,  95);
+            }
+
+            /* Deepen card shadow so elevation reads on dark surfaces */
+            .timeline-content {
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            }
+
+            /* Hardcoded semi-transparent fills that variables can't reach */
+            .timeline-contact {
+                background: rgba(48, 162, 178, 0.12);
+            }
+
+            .timeline-infographic {
+                background: rgba(48, 162, 178, 0.07);
+            }
+
+            .ti-bar::before {
+                background: rgba(48, 162, 178, 0.30);
+            }
+
+            .ti-step-dot {
+                box-shadow: 0 0 0 2px rgba(48, 162, 178, 0.20);
+            }
+
+            .summary {
+                background: rgba(48, 162, 178, 0.10);
+            }
+
+            .status-completed {
+                background: rgba(48, 162, 178, 0.20);
+            }
+
+            .status-pending {
+                background: rgba(78, 85, 85, 0.25);
+            }
+
+            .status-awaiting {
+                background: rgba(210, 100, 65, 0.20);
+            }
+
+            .status-enroute {
+                background: rgba(0, 185, 95, 0.18);
+            }
+
+            .status-delivery {
+                background: rgba(158, 118, 235, 0.20);
+            }
+
+            .doc-link-enroute {
+                background: rgba(0, 185, 95, 0.15);
+            }
+        }
+        /* ── END Dark mode ──────────────────────────────────────────────── */
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
+      <a id="top"></a>
+      <div class="container">
+        <header id="page-header">
             <h1>French Nationality Certificate Journey</h1>
             <div class="file-number">File: CNF 11411/2025 | Tribunal judiciaire de Paris</div>
         </header>
@@ -534,41 +649,49 @@
         <div class="timeline-infographic">
             <div class="ti-title">Tribunal Timeline Overview</div>
             <div class="ti-subtitle">
-                From delivery of your reply to the Tribunal to the expected end of the decision period.
+                Timeline from the Tribunal's request for additional documentation through the decision. The Tribunal issued a refusal on 25 Feb 2026. For more information, click on any dot in this Overview to go to the associated process step in the detailed timeline below.
             </div>
             <div class="ti-bar">
                 <div class="ti-step" id="ti-step-request">
-                    <div class="ti-step-dot"></div>
+                    <a href="#timeline-2">
+                        <div class="ti-step-dot"></div>
+                    </a>
                     <div class="ti-step-label">Tribunal request</div>
                     <div class="ti-step-date">27 Nov 2025</div>
                 </div>
                 <div class="ti-step" id="ti-step-delivery">
-                    <div class="ti-step-dot"></div>
+                    <a href="#timeline-18">
+                        <div class="ti-step-dot"></div>
+                    </a>
                     <div class="ti-step-label">
-                        Reply delivered / awaiting response<span aria-hidden="true" class="ti-footnote">a</span>
+                        Reply delivered<span aria-hidden="true" class="ti-footnote">a</span>
                     </div>
                     <div class="ti-step-date" id="ti-date-delivery">2 Feb 2026</div>
                 </div>
                 <div class="ti-step" id="ti-step-receipt">
-                    <div class="ti-step-dot"></div>
-                    <div class="ti-step-label">Récépissé / completeness</div>
+                    <a href="#timeline-19">
+                        <div class="ti-step-dot"></div>
+                    </a>
+                    <div class="ti-step-label">Récépissé / acknowledgement</div>
                     <div class="ti-step-date" id="ti-date-receipt">
-                        before ≈30 Mar 2026<span aria-hidden="true" class="ti-footnote">b</span>
+                        24 Feb 2026<span aria-hidden="true" class="ti-footnote">b</span>
                     </div>
                 </div>
                 <div class="ti-step" id="ti-step-deadline">
-                    <div class="ti-step-dot"></div>
+                    <a href="#timeline-20">
+                        <div class="ti-step-dot"></div>
+                    </a>
                     <div class="ti-step-label">
-                        Decision period end<span aria-hidden="true" class="ti-footnote">c</span>
+                        Decision received<span aria-hidden="true" class="ti-footnote">c</span>
                     </div>
                     <div class="ti-step-date" id="ti-date-deadline">To be calculated</div>
                 </div>
             </div>
             <div class="ti-footer">
-                <span aria-hidden="true" class="ti-footnote">a</span>
-                <span class="ti-highlight" id="ti-days-since"></span> since reply delivered ·
-                <span aria-hidden="true" class="ti-footnote">b</span> Récépissé likely seven to 56 days after delivery ·
-                <span aria-hidden="true" class="ti-footnote">c</span> Decision period: 6 months from récépissé, with up to two 6‑month extensions.
+                <span aria-hidden="true" class="ti-footnote">a</span> 25 days before deadline ·
+                <span aria-hidden="true" class="ti-footnote">b</span>
+                <span class="ti-highlight" id="ti-days-since"></span> since receipt of Récépissé ·
+                <span aria-hidden="true" class="ti-footnote">c</span> Decision received 25 Feb 2026 — 1 day after Récépissé. 6-month appeal period now running.
         </div>
         </div>
         <!-- END NEW -->
@@ -593,7 +716,7 @@
             </div>
 
             <!-- Court Response Received -->
-            <div class="timeline-item completed">
+            <div class="timeline-item completed" id="timeline-2">
                 <div class="timeline-marker">2</div>
                 <div class="timeline-content">
                     <div class="timeline-date">27 Nov 2025</div>
@@ -641,7 +764,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Father's Birth Certificate (Cattolica) -->
             <div class="timeline-item delivery">
@@ -734,7 +856,6 @@
                 </div>
             </div>
 
-
             <!-- San Giovanni in Marignano Inquiries -->
             <div class="timeline-item delivery">
                 <div class="timeline-marker">5</div>
@@ -780,7 +901,6 @@
                 </div>
             </div>
 
-
             <!-- Colombelles Marriage Certificate -->
             <div class="timeline-item delivery">
                 <div class="timeline-marker">6</div>
@@ -817,7 +937,6 @@
                 </div>
                 </div>
             </div>
-
 
             <!-- Cattolica Marriage Certificate (Backup) -->
             <div class="timeline-item completed">
@@ -857,7 +976,6 @@
                 </div>
             </div>
 
-
             <!-- Archives Calvados -->
             <div class="timeline-item delivery">
                 <div class="timeline-marker">8</div>
@@ -892,7 +1010,6 @@
                 </div>
             </div>
 
-
             <!-- Archives Toulouse -->
             <div class="timeline-item completed">
                 <div class="timeline-marker">9</div>
@@ -919,7 +1036,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Archives Pyrénées-Atlantiques -->
             <div class="timeline-item completed">
@@ -951,7 +1067,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Archives Hautes-Pyrénées -->
             <div class="timeline-item awaiting">
@@ -992,10 +1107,13 @@
                                 <span class="doc-main">📝 My Reply (Reopen Request)</span>
                                 <span class="doc-date">25 Dec 2025</span>
                         </a>
+                        <a href="https://drive.google.com/file/d/1Hucvn6frOWKO0a2TQIs4lCSNcZRi4yLf/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Reminder</span>
+                                <span class="doc-date">20 Feb 2026</span>
+                        </a>
                     </div>
                 </div>
             </div>
-
 
             <!-- Archives Montréal -->
             <div class="timeline-item awaiting">
@@ -1017,7 +1135,6 @@
                 </div>
             </div>
 
-
             <!-- Archives Quebec -->
             <div class="timeline-item awaiting">
                 <div class="timeline-marker">13</div>
@@ -1037,7 +1154,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Centre des Archives du Personnel Militaire -->
             <div class="timeline-item delivery">
@@ -1084,7 +1200,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Archives nationales – numéro X et dossier de naturalisation -->
             <div class="timeline-item awaiting">
@@ -1141,7 +1256,6 @@
                 </div>
             </div>
 
-
             <!-- Sous-direction de l’accès à la nationalité française (Sub-Directorate of Access to French Nationality; SDANF) -->
             <div class="timeline-item awaiting">
                 <div class="timeline-marker">16</div>
@@ -1156,44 +1270,37 @@
                                 <span class="doc-main">📤 Request</span>
                                 <span class="doc-date">4 Jan 2026</span>
                         </a>
-                        <!-- New buttons for latest SDANF communications -->
-                        <!-- <a href="..." class="doc-link" target="_blank">
-                                <span class="doc-main">📧 Auto-reply</span>
-                                <span class="doc-date">XX XXX 2026</span>
+                        <a href="https://drive.google.com/file/d/1W80HscTlL6QNoXi2Ihs6TIEgEJ_B5JZ-/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Reminder</span>
+                                <span class="doc-date">19 Feb 2026</span>
                         </a>
-                        <a href="..." class="doc-link" target="_blank">
-                                <span class="doc-main">📧 Response</span>
-                                <span class="doc-date">XX XXX 2026</span>
+                        <a href="https://drive.google.com/file/d/1Bh2oO0hYiCRT6ccEznow_YH1O8y7Kh_A/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Receipt Acknowledgement</span>
+                                <span class="doc-date">19 Feb 2026</span>
                         </a>
-                        <a href="..." class="doc-link" target="_blank">
-                                <span class="doc-main">📝 My Reply</span>
-                                <span class="doc-date">XX XXX 2026</span>
-                        </a> -->
                     </div>
                 </div>
             </div>
 
-
             <!-- Document Translation -->
-            <div class="timeline-item complete">
+            <div class="timeline-item completed">
                 <div class="timeline-marker">17</div>
                 <div class="timeline-content">
                     <div class="timeline-date">Not Applicable</div>
                     <div class="timeline-title">Certified French Translations (Traducteur Assermenté)</div>
                     <div class="timeline-description">Requirement: Once Italian documents received, send to sworn translator for certified French translations (~€40-60 per document). <br> <strong>Outcome:</strong> Birth extracts from Italy (Giuseppe and Terzo) both were issued in multilingual format per the 8 September 1976 Vienna Convention and therefore certified French translations are not required.</div>
-                    <div class="timeline-status status-complete">⏭️ Skipped</div>
+                    <div class="timeline-status status-completed">⏭️ Skipped</div>
                 </div>
             </div>
 
-
             <!-- Submission to Paris -->
-            <div class="timeline-item delivery">
+            <div class="timeline-item delivery" id="timeline-18">
                 <div class="timeline-marker">18</div>
                 <div class="timeline-content">
                     <div class="timeline-date">2 Feb 2026</div>
                     <div class="timeline-title">Reply Submitted to Tribunal judiciaire de Paris</div>
-                    <div class="timeline-description">Mail complete package with all original documents, certified translations, and French possession-of-status documents to Paris court (via tracked international postal service).  <br> <strong>Outcome:</strong> Reply delivered to Tribunal 25 days before deadline. </div>
-                    <div class="timeline-contact">Deadline: 27 February 2026 (3 months from 27 Nov 2025)</div>
+                    <div class="timeline-description">Mail complete package with all original documents, certified translations, and French possession-of-status documents to Paris court (via tracked international postal service).  <br> <strong>Outcome:</strong> Reply delivered to Tribunal 25 days before deadline of 27 Feb 2026 (3 months from 27 Nov 2025 document request).</div>
+                    <div class="timeline-contact">Tribunal judiciaire de Paris, Service de la nationalité, Parvis Robert Badinter, 75017 PARIS</div>
                     <div class="timeline-status status-delivery">✓ Delivered</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1MmCsCpXVu1qE6Ybn-7SbhcEIzIL07FB-/view?usp=drive_link" class="doc-link" target="_blank">
@@ -1229,10 +1336,58 @@
                                 <span class="doc-date">29 Jan 2026</span>
                             </a>
                         </div>
+                    </div>
                         <div class="timeline-description extra-top-space">
                             * Mural is best viewed using the Google Chrome browser. Link may be viewed as a visitor.<br>
                             ** If prompted for Authentication on the DHL tracking page, use Telephone Number > 0929500520.
                         </div>
+                </div>
+            </div>
+
+            <!-- Acknowledgement of completeness or further requests from Tribunal -->
+            <div class="timeline-item completed" id="timeline-19">
+                <div class="timeline-marker">19</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">24 Feb 2026</div>
+                    <div class="timeline-title">Récépissé / acknowledgement of Tribunal's receipt of reply </div>
+                    <div class="timeline-description">Tribunal expected to send an email conveying receipt of the reply to the additional document request with two possible messages: (1) Tribunal acknowledges receipt of the complete file (récépissé), and the clock starts ticking on the first six months window within which the Tribunal is expected to reply, or (2) the Tribunal acknowledges receipt of the reply to the initial request and requests further documents and/or information. <br> <strong>Outcome:</strong> The Tribunal noted having received to date all the necessary documents for processing the application and established the starting point of the (first) six-month processing period. </div>
+                    <div class="timeline-status status-completed">⌛ Awaiting Reply</div>
+                    <div class="document-links">
+                        <!-- Buttons for communications -->
+                        <a href="https://drive.google.com/file/d/1_L-lpTF1eyTHhqCdkwa6ibbiC2vyaW46/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Récépissé</span>
+                                <span class="doc-date">24 Feb 2026</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1s28bv_JS96r17kjYRUPXKD8PuMbP8nkx/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Récépissé Cover Email</span>
+                                <span class="doc-date">24 Feb 2026</span>
+                        </a>
+                       <!--<a href="..." class="doc-link" target="_blank">
+                                <span class="doc-main">📝 My Reply</span>
+                                <span class="doc-date">XX XXX 2026</span>
+                        </a> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tribunal Decision -->
+            <div class="timeline-item completed" id="timeline-20">
+                <div class="timeline-marker">20</div>
+                <div class="timeline-content">
+                    <div class="timeline-date">25 Feb 2026</div>
+                    <div class="timeline-title">Tribunal Refuses CNF</div>
+                    <div class="timeline-description">The Tribunal judiciaire de Paris issued a formal refusal of the CNF on 25 Feb 2026, one day after the Récépissé. The applicant now has a 6-month period (from the date of the decision) to file an appeal before the cour d'appel, which requires legal representation. <br> <strong>Outcome:</strong> CNF refused. Appeal period running.</div>
+                    <div class="timeline-status status-awaiting">✗ Refused</div>
+                    <div class="document-links">
+                        <!-- Buttons for communications -->
+                        <a href="https://drive.google.com/file/d/1PAOvPQXt7GYbdEmeXNg-8XZ-99qFVD2B/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📧 Decision Email</span>
+                                <span class="doc-date">25 Feb 2026</span>
+                        </a>
+                        <a href="https://drive.google.com/file/d/1BKNaREcgBWBeckwAO2NnnXbFJUcyO8tV/view?usp=drive_link" class="doc-link" target="_blank">
+                                <span class="doc-main">📝 Decision Letter</span>
+                                <span class="doc-date">25 Feb 2026</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -1265,9 +1420,9 @@
             <h2>Progress Summary</h2>
             <div class="stat-box">
                 <div class="stat-number" id="days-until-deadline"></div>
-                <div class="stat-label">Since Original Application</div>
+                <div class="stat-label">since original application was received by the Paris Tribunal</div>
             </div>
-            <p>You have systematically contacted multiple authorities across Italy, France, and Canada to gather the required documentation for your CNF application. Below is your current progress:</p>
+            <p>This application required multiple steps, including communicating with the Paris Tribunal and systematically contacting multiple municiple, state and national authorities in Italy, France, and Canada to gather the required documentation. Below is a count of the steps by status. </p>
             <div class="summary-stats">
                 <div class="stat-box">
                     <div class="stat-number" id="count-completed"></div>
@@ -1293,9 +1448,12 @@
         </div>
     </div>
 
+<a href="#top" class="back-to-top" id="backToTop">Top ↑</a>
 <script>
 (function () {
-     // 1) Day counters
+    console.log('CNF timeline script starting');
+
+    // 1) Day counters
     var today = new Date();
     today.setHours(0, 0, 0, 0);
     var msPerDay = 24 * 60 * 60 * 1000;
@@ -1344,12 +1502,14 @@
     // NEW: JS to drive the horizontal timeline
     // ----------------------------------------
     // Same dates you are using elsewhere
-    var requestDate  = new Date(2025, 10, 27); // 27 Nov 2025 (month 0-based)
-    var deliveryDate = new Date(2026, 1, 2);   // 2 Feb 2026
-    var recepisse    = new Date(2026, 2, 30);  // 30 Mar 2026 (assumed)
+    var requestDate   = new Date(2025, 10, 27); // 27 Nov 2025 (month 0-based)
+    var deliveryDate  = new Date(2026, 1, 2);   // 2 Feb 2026
+    var recepisse     = new Date(2026, 1, 24);  // 24 Feb 2026
+    var decisionDate  = new Date(2026, 1, 25);  // 25 Feb 2026
     requestDate.setHours(0, 0, 0, 0);
     deliveryDate.setHours(0, 0, 0, 0);
     recepisse.setHours(0, 0, 0, 0);
+    decisionDate.setHours(0, 0, 0, 0);
 
     var decisionEnd = new Date(recepisse.getTime());
     decisionEnd.setMonth(decisionEnd.getMonth() + 6);
@@ -1359,20 +1519,21 @@
         return d.toLocaleDateString(undefined, options);
     }
 
-    // Show days since reply delivered in the infographic footer
+    // Show days since receipt of Récépissé in the infographic footer
     var tiDaysEl = document.getElementById('ti-days-since');
     if (tiDaysEl) {
-        if (diffReplyDays >= 0) {
-            tiDaysEl.textContent = diffReplyDays + ' days';
+        var diffRecepisseDays = Math.round((today - recepisse) / msPerDay);
+        if (diffRecepisseDays >= 0) {
+            tiDaysEl.textContent = diffRecepisseDays + ' days';
         } else {
-            tiDaysEl.textContent = 'Not yet delivered';
+            tiDaysEl.textContent = 'Not yet received';
         }
     }
 
-    // Set decision end date text
+    // Set decision date text
     var deadlineEl = document.getElementById('ti-date-deadline');
     if (deadlineEl) {
-        deadlineEl.textContent = formatPhaseDate(decisionEnd) + ' (initial 6‑month deadline)';
+        deadlineEl.textContent = '25 Feb 2026';
     }
 
     // Highlight current step with legend-aligned colours
@@ -1392,25 +1553,56 @@
     ['ti-step-request','ti-step-delivery','ti-step-receipt','ti-step-deadline']
         .forEach(function(id) { markStep(id, null); });
 
-    if (today < deliveryDate) {
+    if (today >= decisionDate) {
+        // Decision received — all steps complete
+        markStep('ti-step-request', 'completed');
+        markStep('ti-step-delivery', 'completed');
+        markStep('ti-step-receipt', 'completed');
+        markStep('ti-step-deadline', 'completed');
+    } else if (today < deliveryDate) {
         // CNF request sent by Tribunal, applicant preparing reply
         markStep('ti-step-request', 'current');
     } else if (today >= deliveryDate && today < recepisse) {
         // Reply delivered; waiting for récépissé
         markStep('ti-step-request', 'completed');
         markStep('ti-step-delivery', 'current');
-    } else if (today >= recepisse && today < decisionEnd) {
-        // Récépissé received; in decision period
-        markStep('ti-step-request', 'completed');
-        markStep('ti-step-delivery', 'completed');
-        markStep('ti-step-receipt', 'current');
-    } else {
-        // After initial decision window end date
+    } else if (today >= recepisse && today < decisionDate) {
+        // Récépissé received; awaiting decision
         markStep('ti-step-request', 'completed');
         markStep('ti-step-delivery', 'completed');
         markStep('ti-step-receipt', 'completed');
         markStep('ti-step-deadline', 'current');
     }
+
+
+    // Show/hide "Back to Top" button based on header visibility
+    var backToTop = document.getElementById('backToTop');
+    var headerEl  = document.getElementById('page-header');
+
+    if (backToTop && headerEl && 'IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                console.log('Header intersecting:', entry.isIntersecting, 'ratio:', entry.intersectionRatio);
+                if (entry.isIntersecting) {
+                    // Header is visible → hide button
+                    backToTop.classList.remove('visible');
+                } else {
+                    // Header is not visible → show button
+                    backToTop.classList.add('visible');
+                }
+            });
+        }, {
+            root: null,        // viewport
+            threshold: 0.1     // treat as "visible" if at least 10% is in view
+        });
+        console.log('Observing header for Top button visibility');
+        observer.observe(headerEl);
+    } else {
+        console.log('Observer not available or elements missing; showing Top by default');
+        // Fallback: always show
+        backToTop.classList.add('visible');
+    }
+
     // ----------------------------------------
     // END NEW
 })();
