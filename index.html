@@ -713,35 +713,41 @@
                     <a href="#timeline-21">
                         <div class="ti-step-dot"></div>
                     </a>
-                    <div class="ti-step-label">Document acquisition</div>
+                    <div class="ti-step-label">
+                        Document acquisition<span aria-hidden="true" class="ti-footnote">a</span>
+                    </div>
                     <div class="ti-step-date">TBD</div>
                 </div>
                 <div class="ti-step" id="f2-ti-step-request">
                     <a href="#">
                         <div class="ti-step-dot"></div>
                     </a>
-                    <div class="ti-step-label">Tribunal request</div>
+                    <div class="ti-step-label">Demande submission</div>
                     <div class="ti-step-date">TBD</div>
                 </div>
                 <div class="ti-step" id="f2-ti-step-receipt">
                     <a href="#">
                         <div class="ti-step-dot"></div>
                     </a>
-                    <div class="ti-step-label">Récépissé</div>
+                    <div class="ti-step-label">
+                        Récépissé<span aria-hidden="true" class="ti-footnote">b</span>
+                    </div>
                     <div class="ti-step-date">TBD</div>
                 </div>
                 <div class="ti-step" id="f2-ti-step-deadline">
                     <a href="#">
                         <div class="ti-step-dot"></div>
                     </a>
-                    <div class="ti-step-label">Decision</div>
+                    <div class="ti-step-label">
+                        Decision<span aria-hidden="true" class="ti-footnote">c</span>
+                    </div>
                     <div class="ti-step-date">TBD</div>
                 </div>
             </div>
             <div class="ti-footer">
-                <span aria-hidden="true" class="ti-footnote">a</span> Document acquisition: <span class="ti-highlight" id="f2-days-since-refusal"></span> since refusal ·
-                <span aria-hidden="true" class="ti-footnote">b</span> Récépissé: TBD ·
-                <span aria-hidden="true" class="ti-footnote">c</span> Decision period: 6 months from récépissé, with up to two 6‑month extensions.
+                <span aria-hidden="true" class="ti-footnote">a</span> <span class="ti-highlight" id="f2-days-since-refusal"></span> since refusal ·
+                <span aria-hidden="true" class="ti-footnote">b</span> TBD days after Demande receipt ·
+                <span aria-hidden="true" class="ti-footnote">c</span> Expected by TBD (6 months from Récépissé) with up to two 6‑month extensions.
             </div>
         </div>
 
@@ -784,13 +790,13 @@
                     <div class="ti-step-label">
                         Decision received<span aria-hidden="true" class="ti-footnote">c</span>
                     </div>
-                    <div class="ti-step-date" id="ti-date-deadline">To be calculated</div>
+                    <div class="ti-step-date">25 Feb 2026</div>
                 </div>
             </div>
             <div class="ti-footer">
                 <span aria-hidden="true" class="ti-footnote">a</span> 25 days before deadline ·
-                <span aria-hidden="true" class="ti-footnote">b</span> 22 days from reply delivery (2 Feb) to Récépissé (24 Feb) ·
-                <span aria-hidden="true" class="ti-footnote">c</span> Decision received 25 Feb 2026 — 1 day after Récépissé. 6-month appeal period now running.
+                <span aria-hidden="true" class="ti-footnote">b</span> 22 days from reply delivery to Récépissé ·
+                <span aria-hidden="true" class="ti-footnote">c</span> Decision received one day after Récépissé. 6-month appeal period running through 25 Aug 2026.
         </div>
         </div>
         <!-- END NEW -->
@@ -1757,11 +1763,6 @@
         f2DaysEl.textContent = diffRefusalDays + ' day' + (diffRefusalDays === 1 ? '' : 's');
     }
 
-    // Set decision date text
-    var deadlineEl = document.getElementById('ti-date-deadline');
-    if (deadlineEl) {
-        deadlineEl.textContent = '25 Feb 2026';
-    }
 
     // Highlight current step with legend-aligned colours
     function markStep(id, state) {
