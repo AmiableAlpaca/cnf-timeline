@@ -219,6 +219,22 @@
             text-transform: uppercase;
         }
 
+        .jump-f2-btn {
+            display: inline-block;
+            background: var(--color-blue-500);
+            color: var(--color-white);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            margin: 12px 0 4px;
+        }
+
+        .jump-f2-btn:hover {
+            opacity: 0.85;
+        }
+
         .back-to-top {
             position: fixed;
             right: 20px;
@@ -684,6 +700,8 @@
             <div class="file-number">File: CNF 11411/2025 | Tribunal judiciaire de Paris</div>
         </header>
 
+        <a href="#timeline-21" class="jump-f2-btn">↓ Jump to File 2 steps</a>
+
         <!-- File 2 infographic -->
         <div class="timeline-infographic">
             <div class="ti-title">File 2 — Tribunal Timeline Overview</div>
@@ -721,7 +739,7 @@
                 </div>
             </div>
             <div class="ti-footer">
-                <span aria-hidden="true" class="ti-footnote">a</span> Document acquisition period: TBD ·
+                <span aria-hidden="true" class="ti-footnote">a</span> Document acquisition: <span class="ti-highlight" id="f2-days-since-refusal"></span> since refusal ·
                 <span aria-hidden="true" class="ti-footnote">b</span> Récépissé: TBD ·
                 <span aria-hidden="true" class="ti-footnote">c</span> Decision period: 6 months from récépissé, with up to two 6‑month extensions.
             </div>
@@ -771,8 +789,7 @@
             </div>
             <div class="ti-footer">
                 <span aria-hidden="true" class="ti-footnote">a</span> 25 days before deadline ·
-                <span aria-hidden="true" class="ti-footnote">b</span>
-                <span class="ti-highlight" id="ti-days-since"></span> since receipt of Récépissé ·
+                <span aria-hidden="true" class="ti-footnote">b</span> 22 days from reply delivery (2 Feb) to Récépissé (24 Feb) ·
                 <span aria-hidden="true" class="ti-footnote">c</span> Decision received 25 Feb 2026 — 1 day after Récépissé. 6-month appeal period now running.
         </div>
         </div>
@@ -1733,15 +1750,11 @@
         return d.toLocaleDateString(undefined, options);
     }
 
-    // Show days since receipt of Récépissé in the infographic footer
-    var tiDaysEl = document.getElementById('ti-days-since');
-    if (tiDaysEl) {
-        var diffRecepisseDays = Math.round((today - recepisse) / msPerDay);
-        if (diffRecepisseDays >= 0) {
-            tiDaysEl.textContent = diffRecepisseDays + ' days';
-        } else {
-            tiDaysEl.textContent = 'Not yet received';
-        }
+    // Show days since refusal (25 Feb 2026) in the File 2 infographic footer
+    var f2DaysEl = document.getElementById('f2-days-since-refusal');
+    if (f2DaysEl) {
+        var diffRefusalDays = Math.round((today - decisionDate) / msPerDay);
+        f2DaysEl.textContent = diffRefusalDays + ' day' + (diffRefusalDays === 1 ? '' : 's');
     }
 
     // Set decision date text
