@@ -63,14 +63,54 @@
             content: '';
             position: absolute;
             left: 30px;
-            top: 0;
-            bottom: 0;
+            top: 8px;    /* starts where the top end cap arc terminates */
+            bottom: 8px; /* ends where the bottom end cap arc begins */
             width: 3px;
             background: var(--color-teal-500);
         }
 
+        /* End cap at TOP of line: border-corner curve to the right, matching card border-radius */
+        .timeline > .timeline-item:first-child::before {
+            content: '';
+            position: absolute;
+            left: 30px;                  /* aligns with the 3px connector line */
+            top: -20px;                  /* y=0 in .timeline coords — arc sits at very top of container */
+            width: 8px;                  /* = border-radius — top border fully consumed by curve */
+            height: 8px;                 /* = border-radius — arc fills full height, no straight section */
+            border-left: 3px solid var(--color-teal-500);
+            border-top: 3px solid var(--color-teal-500);
+            border-top-left-radius: 8px; /* same radius as .timeline-content */
+            background: transparent;
+            box-sizing: border-box;
+        }
+
+        /* End cap at BOTTOM of line: same corner-curve approach */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            left: 30px;
+            bottom: 0;
+            width: 8px;
+            height: 8px;                 /* = border-radius — arc fills full height, no straight section */
+            border-left: 3px solid var(--color-teal-500);
+            border-bottom: 3px solid var(--color-teal-500);
+            border-bottom-left-radius: 8px;
+            background: transparent;
+            box-sizing: border-box;
+        }
+
         .timeline-f2::before {
             background: var(--color-blue-500);
+        }
+
+        .timeline-f2 > .timeline-item:first-child::before {
+            border-left-color: var(--color-blue-500);
+            border-top-color: var(--color-blue-500);
+        }
+
+        .timeline-f2::after {
+            border-left-color: var(--color-blue-500);
+            border-bottom-color: var(--color-blue-500);
         }
 
         .timeline-f2 .timeline-title {
@@ -432,6 +472,11 @@
         @media (max-width: 600px) {
             .timeline::before {
                 left: 15px;
+            }
+
+            .timeline > .timeline-item:first-child::before,
+            .timeline::after {
+                left: 15px;   /* matches mobile line position */
             }
 
             .timeline-item {
