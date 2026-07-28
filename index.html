@@ -19,6 +19,7 @@
             --color-purple-500: rgba(128, 90, 213, 1);
             --color-green-600: rgb(0, 150, 77); /* En route */
             --color-blue-500: rgba(37, 99, 235, 1);
+            --color-red-600: rgba(196, 30, 58, 1); /* Refused — crimson, kept clear of the burnt-sienna orange-500 */
         }
 
         body {
@@ -164,12 +165,28 @@
             background: var(--color-purple-500);
         }
 
+        .timeline-item.refused .timeline-marker {
+            background: var(--color-red-600);
+        }
+
+        /* Hollow marker: a line of inquiry closed without a result, as opposed
+           to the solid grey of a step not yet started. */
+        .timeline-item.closed .timeline-marker {
+            background: var(--color-cream-50);
+            border-color: var(--color-slate-500);
+            color: var(--color-slate-500);
+        }
+
         .timeline-content {
             background: var(--color-white);
             padding: 15px;
             border-radius: 8px;
             border-left: 3px solid var(--color-teal-500);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-item.completed .timeline-content {
+            border-left-color: var(--color-teal-600);
         }
 
         .timeline-item.pending .timeline-content {
@@ -186,6 +203,14 @@
 
         .timeline-item.delivery .timeline-content {
             border-left-color: var(--color-purple-500);
+        }
+
+        .timeline-item.refused .timeline-content {
+            border-left-color: var(--color-red-600);
+        }
+
+        .timeline-item.closed .timeline-content {
+            border-left-color: var(--color-slate-500);
         }
 
         .timeline-date {
@@ -260,6 +285,21 @@
         .status-delivery {
             background: rgba(128, 90, 213, 0.15);
             color: var(--color-purple-500);
+            text-transform: uppercase;
+        }
+
+        .status-refused {
+            background: rgba(196, 30, 58, 0.15);
+            color: var(--color-red-600);
+            text-transform: uppercase;
+        }
+
+        /* Outlined rather than filled, echoing the hollow marker */
+        .status-closed {
+            background: transparent;
+            color: var(--color-slate-500);
+            border: 1px dashed var(--color-slate-500);
+            padding: 3px 7px;
             text-transform: uppercase;
         }
 
@@ -428,6 +468,15 @@
             background: var(--color-purple-500);
         }
 
+        .dot-closed {
+            background: transparent;
+            border: 2px solid var(--color-slate-500);
+        }
+
+        .dot-refused {
+            background: var(--color-red-600);
+        }
+
         .dot-pending {
             background: var(--color-gray-300);
         }
@@ -445,9 +494,19 @@
             color: var(--color-charcoal-700);
         }
 
+        .summary h3 {
+            margin: 25px 0 0;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-slate-500);
+        }
+
         .summary-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            /* 120px lets all seven statuses sit on one row at desktop width */
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
@@ -471,6 +530,8 @@
             color: var(--color-slate-500);
             text-transform: uppercase;
             margin-top: 5px;
+            /* Safety net only; labels carry spaces around slashes so they wrap cleanly */
+            overflow-wrap: break-word;
         }
 
         @media (max-width: 600px) {
@@ -687,6 +748,7 @@
                 --color-purple-500:   rgba(158, 118, 235, 1);
                 --color-green-600:    rgb(0,   185,  95);
                 --color-blue-500:     rgba(96,  165, 250, 1);
+                --color-red-600:      rgba(255, 110, 133, 1);
             }
 
             /* Deepen card shadow so elevation reads on dark surfaces */
@@ -738,6 +800,10 @@
 
             .status-delivery {
                 background: rgba(158, 118, 235, 0.20);
+            }
+
+            .status-refused {
+                background: rgba(255, 110, 133, 0.18);
             }
 
             .doc-link-enroute {
@@ -936,7 +1002,7 @@
                     <div class="timeline-title">Father's Birth Certificate – Request to Cattolica</div>
                     <div class="timeline-description">Requested estratto per riassunto (full birth certificate) of Elio Terzo GESSAROLI from Comune di Cattolica.<br> <strong>Outcome:</strong> Birth certificate found, mailed (on 14 December) to Marc-André's address (received 16 Jan 2026) and forwarded on 17 January to Hua Hin via DHL. Received on 24 January.</div>
                     <div class="timeline-contact">Contact: Ufficio di Stato Civile, Cattolica (Marina ANDRUCCIOLI)</div>
-                    <div class="timeline-status status-delivery">✓ Received via DHL</div>
+                    <div class="timeline-status status-delivery">✓ Received (via DHL)</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1IIqXxI6_MB4ObzvGFgd3baYwlkzsZR9B/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 Request</span>
@@ -1201,14 +1267,14 @@
             </div>
 
             <!-- Archives Pyrénées-Atlantiques -->
-            <div class="timeline-item completed">
+            <div class="timeline-item closed">
                 <div class="timeline-marker">10</div>
                 <div class="timeline-content">
                     <div class="timeline-date">12 Dec 2025 → 25 Dec 2025</div>
                     <div class="timeline-title">Historical French Identity Documents Search - Pyrénées-Atlantiques</div>
                     <div class="timeline-description">Submitted inquiry to Archives départementales des Pyrénées-Atlantiques seeking historical passport and identity card registers (1939-1951) for Elio Terzo GESSAROLI.<br> <strong>Outcome:</strong> Cancelled request based on new knowledge that Elio worked in Bachebirou in Hautes-Pyrénées and did not live/work in Pyrénées-Atlantiques. </div>
                     <div class="timeline-contact">Contact: Archives départementales des Pyrénées-Atlantiques</div>
-                    <div class="timeline-status status-completed">✓ Cancelled</div>
+                    <div class="timeline-status status-closed">✓ Cancelled</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1Qr2JSv5aPZsBIzYmUbOABomrHSR5GdY-/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 Request</span>
@@ -1232,14 +1298,14 @@
             </div>
 
             <!-- Archives Hautes-Pyrénées -->
-            <div class="timeline-item completed">
+            <div class="timeline-item closed">
                 <div class="timeline-marker">11</div>
                 <div class="timeline-content">
                     <div class="timeline-date">15 Dec 2025 → 27 Jul 2026</div>
                     <div class="timeline-title">Historical French Identity Documents Search - Hautes-Pyrénées</div>
                     <div class="timeline-description">Submitted inquiry to Archives départementales des Hautes-Pyrénées seeking historical passport and identity card registers (1939-1951) for Elio Terzo GESSAROLI. Originating email of 12 December was met with a response mandating filling out an online form to submit the request (done on 15 December).<br> <strong>Outcome:</strong> Initially, no documents found. Followed up re: Bachebirou affiliation. Also, authority recommended SDANF inquiry; see timeline item 16. Ultimately abandoned due to non-response. </div>
                     <div class="timeline-contact">Contact: Archives départementales des Hautes-Pyrénées</div>
-                    <div class="timeline-status status-complete">✓ Abandoned</div>
+                    <div class="timeline-status status-closed">✓ Abandoned</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1R8JkeLko1CYq3xM_kxhcGQstvxXmqEbP/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 Request</span>
@@ -1279,14 +1345,14 @@
             </div>
 
             <!-- Archives Montréal -->
-            <div class="timeline-item completed">
+            <div class="timeline-item closed">
                 <div class="timeline-marker">12</div>
                 <div class="timeline-content">
                     <div class="timeline-date">12 Dec 2025 → 27 July 2026</div>
                     <div class="timeline-title">Historical French Identity Documents Search - Montréal</div>
                     <div class="timeline-description">Submitted inquiry to Consulat général de France à Montréal seeking consular documents (1951-1957+) for Elio Terzo GESSAROLI<br> <strong>Outcome:</strong> Ultimately, abandoned due to non-response.</div>
                     <div class="timeline-contact">Contact: Consulat général de France à Montréal</div>
-                    <div class="timeline-status status-completed">✓ Abandoned</div>
+                    <div class="timeline-status status-closed">✓ Abandoned</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1REF3mAxQtGS6YG1R4iCXvpG5_GgYQUr_/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 Request</span>
@@ -1299,14 +1365,14 @@
             </div>
 
             <!-- Archives Quebec -->
-            <div class="timeline-item completed">
+            <div class="timeline-item closed">
                 <div class="timeline-marker">13</div>
                 <div class="timeline-content">
                     <div class="timeline-date">12 Dec 2025 → 27 July 2026</div>
                     <div class="timeline-title">Historical French Identity Documents Search - Quebec</div>
                     <div class="timeline-description">Submitted inquiry to Consulat général de France à Québec seeking consular documents (1951-1957+) for Elio Terzo GESSAROLI</div>
                     <div class="timeline-contact">Contact: Consulat général de France à Québec</div>
-                    <div class="timeline-status status-completed">✓ Abandoned</div>
+                    <div class="timeline-status status-closed">✓ Abandoned</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1REwjKwpA4gycGVMNcibI47LK4SAgsnL_/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 Request</span>
@@ -1365,14 +1431,14 @@
             </div>
 
             <!-- Archives nationales – numéro X et dossier de naturalisation -->
-            <div class="timeline-item completed">
+            <div class="timeline-item closed">
                 <div class="timeline-marker">15</div>
                 <div class="timeline-content">
                     <div class="timeline-date">13 Dec 2025 → </div>
                     <div class="timeline-title">Naturalisation Documents Search - Archives nationales</div>
                     <div class="timeline-description">Submitted inquiry to Archives nationales seeking the naturalisation file number and naturalisation file the Giuseppe GESSAROLI family<br> <strong>Outcome:</strong> The Archives nationales found a 36-page naturalisation file for Giuseppe. Cost for reproduction was quoted. However, this document was deemed not worth pursuing as it appears to be the same as already received from Calvados.</div>
                     <div class="timeline-contact">Contact: Archives nationales</div>
-                    <div class="timeline-status status-complete">✓ Closed</div>
+                    <div class="timeline-status status-closed">✓ Closed</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1RYJXwcwuT1o0Vbrns5Xsv21zxDL7fV2W/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 Request</span>
@@ -1431,7 +1497,7 @@
                     <div class="timeline-title">Sous-direction de l’accès à la nationalité française (SDANF)</div>
                     <div class="timeline-description">Submitted inquiry to SDANF seeking any file relating to French nationality for Elio Terzo Gessaroli. <br> <strong>Outcome:</strong> SDANF replied directly to the Tribunal and refused to directly supply a copy of the reply. </div>
                     <div class="timeline-contact">Contact: Sous-direction de l’accès à la nationalité française (sdanf-accueil@interieur.gouv.fr)</div>
-                    <div class="timeline-status status-complete">✓ Completed</div>
+                    <div class="timeline-status status-completed">✓ Completed</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1Vu_A6IImPeWyLRL_-m0lqo9lIht-GgJQ/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 Request</span>
@@ -1478,25 +1544,25 @@
             </div>
 
             <!-- Document Translation -->
-            <div class="timeline-item completed">
+            <div class="timeline-item closed">
                 <div class="timeline-marker">17</div>
                 <div class="timeline-content">
                     <div class="timeline-date">Not Applicable</div>
                     <div class="timeline-title">Certified French Translations (Traducteur Assermenté)</div>
                     <div class="timeline-description">Requirement: Once Italian documents received, send to sworn translator for certified French translations (~€40-60 per document). <br> <strong>Outcome:</strong> Birth extracts from Italy (Giuseppe and Terzo) both were issued in multilingual format per the 8 September 1976 Vienna Convention and therefore certified French translations are not required.</div>
-                    <div class="timeline-status status-completed">⏭️ Skipped</div>
+                    <div class="timeline-status status-closed">⏭️ Skipped</div>
                 </div>
             </div>
 
             <!-- Submission to Paris -->
-            <div class="timeline-item delivery" id="timeline-18">
+            <div class="timeline-item completed" id="timeline-18">
                 <div class="timeline-marker">18</div>
                 <div class="timeline-content">
                     <div class="timeline-date">2 Feb 2026</div>
                     <div class="timeline-title">Reply Submitted to Tribunal judiciaire de Paris</div>
                     <div class="timeline-description">Mail complete package with all original documents, certified translations, and French possession-of-status documents to Paris court (via tracked international postal service).  <br> <strong>Outcome:</strong> Reply delivered to Tribunal 25 days before deadline of 27 Feb 2026 (3 months from 27 Nov 2025 document request).</div>
                     <div class="timeline-contact">Tribunal judiciaire de Paris, Service de la nationalité, Parvis Robert Badinter, 75017 PARIS</div>
-                    <div class="timeline-status status-delivery">✓ Delivered</div>
+                    <div class="timeline-status status-completed">✓ Submitted</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1MmCsCpXVu1qE6Ybn-7SbhcEIzIL07FB-/view?usp=drive_link" class="doc-link" target="_blank">
                             <span class="doc-main">📝 Reply Letter (French)</span>
@@ -1566,13 +1632,13 @@
             </div>
 
             <!-- Tribunal Decision -->
-            <div class="timeline-item completed" id="timeline-20">
+            <div class="timeline-item refused" id="timeline-20">
                 <div class="timeline-marker">20</div>
                 <div class="timeline-content">
                     <div class="timeline-date">25 Feb 2026</div>
                     <div class="timeline-title">Tribunal Refuses CNF</div>
                     <div class="timeline-description">The Tribunal judiciaire de Paris issued a formal refusal of the CNF on 25 Feb 2026, one day after the Récépissé. The applicant now has a 6-month period (from the date of the decision) to file an appeal before the cour d'appel, which requires legal representation. <br> <strong>Outcome:</strong> CNF refused. Appeal period running.</div>
-                    <div class="timeline-status status-awaiting">✗ Refused</div>
+                    <div class="timeline-status status-refused">✗ Refused</div>
                     <div class="document-links">
                         <!-- Buttons for communications -->
                         <a href="https://drive.google.com/file/d/1PAOvPQXt7GYbdEmeXNg-8XZ-99qFVD2B/view?usp=drive_link" class="doc-link" target="_blank">
@@ -1600,7 +1666,7 @@
                     <div class="timeline-title">Second Copy of Terzo's Birth Certificate</div>
                     <div class="timeline-description">Request another copy of Terzo's birth certificate as this document is central to the Demande for a CNF by filiation via Lorenza. <br> <strong>Outcome:</strong> Comune sent PDF copy of physically stamped and signed extract. Requested e-Signed or physically mailed copy. </div>
                     <div class="timeline-contact">Contact: Ufficio di Stato Civile, Cattolica (Marina ANDRUCCIOLI)</div>
-                    <div class="timeline-status status-delivery">✓ Delivered</div>
+                    <div class="timeline-status status-delivery">✓ Received</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1Am3fy6jRVqXGXIjxIOJb5MbD2JgEMMrG/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 My Request</span>
@@ -1696,7 +1762,7 @@
                     <div class="timeline-title">Lorenza's Death Certificate</div>
                     <div class="timeline-description">Lorenza died on 1 Jul 2004 in Mirande, Gers, France. <br> <strong>Outcome:</strong> Received PDF scan of physically stamped and signed extract. Requested either e-signed or physical copy via mail. Madame PENNENT agreed to send by physical mail. Marc-Andre received the document before 22 March. </div>
                     <div class="timeline-contact">Contact: Ufficio di Stato Civile, Mirande (Valentine PENNENT)</div>
-                    <div class="timeline-status status-delivery">✓ Delivered</div>
+                    <div class="timeline-status status-delivery">✓ Received</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1_4F0ap5JyPKHgod4m4QNMAEoel6Wl2n-/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 My Request</span>
@@ -1741,7 +1807,7 @@
                     <div class="timeline-title">Second Copy of Grandparents' Marriage Certificate</div>
                     <div class="timeline-description">Married on 10 Jun 1926. <br> <strong>Outcome:</strong> On 5 March, Madame THIERRY agreed to send copy by postal mail. Marc-Andrereceived the document before 22 March. </div>
                     <div class="timeline-contact">Contact: Mairie de Colombelles, Service au public (Laetitia THIERRY)</div>
-                    <div class="timeline-status status-delivery">✓ Delivered</div>
+                    <div class="timeline-status status-delivery">✓ Received</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/19KHE3m8MWF4kBCP_BznaDekJadBjUiGF/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 My Request</span>
@@ -1771,7 +1837,7 @@
                     <div class="timeline-title">Lorenza's second marriage extract</div>
                     <div class="timeline-description">Married in 1957 in Pauilhac. <br> <strong>Outcome: </strong> The request to Pauilhac, Gers originally was misdirected to Pauillac, Gironde. This said, Pauilhac, Gers did respond within less than two weeks by sending the requested marriage extract. Much later, the office of the Marie of Pauillac, Gironde sent an email notification of the misdirection to which no response was sent so as to avoid time wasting for both parties. </div>
                     <div class="timeline-contact">Contact: Ville de Pauilhac, État civil Natacha LAVOLLÉE</div>
-                    <div class="timeline-status status-delivery">✓ Delivered</div>
+                    <div class="timeline-status status-delivery">✓ Received</div>
                     <div class="document-links">
                         <a href="https://drive.google.com/file/d/1r7kU6K_VJjpOi7764O9g97VidLDjWI2B/view?usp=drive_link" class="doc-link" target="_blank">
                                 <span class="doc-main">📤 My Request</span>
@@ -1898,13 +1964,13 @@
             </div>
 
             <!-- File 2 CNF Application Submission -->
-            <div class="timeline-item delivery" id="timeline-30">
+            <div class="timeline-item completed" id="timeline-30">
                 <div class="timeline-marker">30</div>
                 <div class="timeline-content">
                     <div class="timeline-date">23 Jul 2026</div>
                     <div class="timeline-title">Submission of Second CNF Application</div>
                     <div class="timeline-description">Second application submitted with rationale via filiation through Terzo < Lorenza. <br> <strong>Next steps:</strong> Await Tribunal response (RFI or récépissé).</div>
-                    <div class="timeline-status status-delivered">✓ Delivered</div>
+                    <div class="timeline-status status-completed">✓ Submitted</div>
                     <div class="document-links">
                         <a href="https://www.perplexity.ai/search/c4b21807-643e-48a8-88e7-fbae7145e85c#107" class="doc-link" target="_blank">
                                 <span class="doc-main">📃 Last Perplexity Iterations</span>
@@ -2010,23 +2076,31 @@
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-dot dot-completed"></div>
-                <span>Completed/Responded</span>
+                <span>Completed / Responded</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot dot-awaiting"></div>
-                <span>Awaiting Response</span>
+                <div class="legend-dot dot-delivery"></div>
+                <span>Document Received</span>
             </div>
             <div class="legend-item">
                 <div class="legend-dot dot-enroute"></div>
                 <span>En Route</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot dot-delivery"></div>
-                <span>Received</span>
+                <div class="legend-dot dot-awaiting"></div>
+                <span>Awaiting Response</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot dot-closed"></div>
+                <span>Closed – No Result</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot dot-refused"></div>
+                <span>Refused</span>
             </div>
             <div class="legend-item">
                 <div class="legend-dot dot-pending"></div>
-                <span>Pending/Future Action</span>
+                <span>Pending / Future Action</span>
             </div>
         </div>
 
@@ -2036,27 +2110,69 @@
                 <div class="stat-number" id="days-until-deadline"></div>
                 <div class="stat-label">since original application was received by the Paris Tribunal</div>
             </div>
-            <p>This application required multiple steps, including communicating with the Paris Tribunal and systematically contacting multiple municiple, state and national authorities in Italy, France, and Canada to gather the required documentation. Below is a count of the steps by status. </p>
+            <p>This application required multiple steps, including communicating with the Paris Tribunal and systematically contacting multiple municiple, state and national authorities in Italy, France, and Canada to gather the required documentation. Below is a count of the steps by status, split by application file. Labels match the colour key above. </p>
+
+            <h3>File 1 — refused 25 Feb 2026</h3>
             <div class="summary-stats">
                 <div class="stat-box">
-                    <div class="stat-number" id="count-completed"></div>
-                    <div class="stat-label">Steps Completed</div>
+                    <div class="stat-number" id="f1-count-completed"></div>
+                    <div class="stat-label">Completed / Responded</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number" id="count-awaiting"></div>
+                    <div class="stat-number" id="f1-count-delivered"></div>
+                    <div class="stat-label">Document Received</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f1-count-enroute"></div>
+                    <div class="stat-label">En Route</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f1-count-awaiting"></div>
                     <div class="stat-label">Awaiting Response</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number" id="count-enroute"></div>
-                    <div class="stat-label">En Route by Post</div>
+                    <div class="stat-number" id="f1-count-closed"></div>
+                    <div class="stat-label">Closed – No Result</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number" id="count-delivered"></div>
-                    <div class="stat-label">Document Deliveries</div>
+                    <div class="stat-number" id="f1-count-refused"></div>
+                    <div class="stat-label">Refused</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-number" id="count-pending"></div>
-                    <div class="stat-label">Future/Pending Steps</div>
+                    <div class="stat-number" id="f1-count-pending"></div>
+                    <div class="stat-label">Pending / Future Action</div>
+                </div>
+            </div>
+
+            <h3>File 2 — in progress</h3>
+            <div class="summary-stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-completed"></div>
+                    <div class="stat-label">Completed / Responded</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-delivered"></div>
+                    <div class="stat-label">Document Received</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-enroute"></div>
+                    <div class="stat-label">En Route</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-awaiting"></div>
+                    <div class="stat-label">Awaiting Response</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-closed"></div>
+                    <div class="stat-label">Closed – No Result</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-refused"></div>
+                    <div class="stat-label">Refused</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-pending"></div>
+                    <div class="stat-label">Pending / Future Action</div>
                 </div>
             </div>
         </div>
@@ -2091,27 +2207,17 @@
     replyDate.setHours(0, 0, 0, 0);
     var diffReplyDays = Math.round((today - replyDate) / msPerDay);
 
-    // 2) Disposition counters
-    var completedCount = document.querySelectorAll('.timeline-item.completed').length;
-    var awaitingCount  = document.querySelectorAll('.timeline-item.awaiting').length;
-    var enrouteCount   = document.querySelectorAll('.timeline-item.enroute').length;
-    var deliveredCount = document.querySelectorAll('.timeline-item.delivery').length;
-    var pendingCount   = document.querySelectorAll('.timeline-item.pending').length;
-
-    var completedEl = document.getElementById('count-completed');
-    if (completedEl) completedEl.textContent = completedCount;
-
-    var awaitingEl = document.getElementById('count-awaiting');
-    if (awaitingEl) awaitingEl.textContent = awaitingCount;
-
-    var enrouteEl = document.getElementById('count-enroute');
-    if (enrouteEl) enrouteEl.textContent = enrouteCount;
-
-    var deliveredEl = document.getElementById('count-delivered');
-    if (deliveredEl) deliveredEl.textContent = deliveredCount;
-
-    var pendingEl = document.getElementById('count-pending');
-    if (pendingEl) pendingEl.textContent = pendingCount;
+    // 2) Disposition counters, scoped per application file.
+    //    .timeline-f2 also carries the .timeline class, hence the :not() on File 1.
+    [['f1', '.timeline:not(.timeline-f2)'], ['f2', '.timeline-f2']].forEach(function (pair) {
+        var root = document.querySelector(pair[1]);
+        if (!root) return;
+        ['completed', 'delivered', 'enroute', 'awaiting', 'closed', 'refused', 'pending'].forEach(function (key) {
+            var cls = (key === 'delivered') ? 'delivery' : key; // count id says "delivered", class is "delivery"
+            var el = document.getElementById(pair[0] + '-count-' + key);
+            if (el) el.textContent = root.querySelectorAll('.timeline-item.' + cls).length;
+        });
+    });
 
     // NEW: JS to drive the horizontal timeline
     // ----------------------------------------
