@@ -639,7 +639,12 @@
             box-shadow: 0 0 0 2px rgba(33,128,141,0.15);
         }
 
-        /* Teal = completed/responded (matches legend) */
+        /* These bars use a deliberate subset of the 7-status legend below —
+           never a colour that contradicts it.
+           teal = Completed/Responded, orange = Awaiting Response,
+           grey (default) = Pending/Future Action, crimson = Refused. */
+
+        /* Teal = completed/responded */
         .ti-step.completed .ti-step-dot {
             background: var(--color-teal-600);
         }
@@ -647,6 +652,17 @@
         /* Orange = current, awaiting next response/decision */
         .ti-step.current .ti-step-dot {
             background: var(--color-orange-500);
+        }
+
+        /* Crimson = refused */
+        .ti-step.refused .ti-step-dot {
+            background: var(--color-red-600);
+        }
+
+        /* The ≤600px breakpoint sets .ti-step { display: flex }, which outranks
+           the UA [hidden] rule — without this the conditional RFI dot leaks in. */
+        .ti-step[hidden] {
+            display: none !important;
         }
 
         .ti-step-label {
@@ -840,7 +856,7 @@
                     <div class="ti-step-date">2 Mar - 29 May 2026</div>
                 </div>
                 <div class="ti-step" id="f2-ti-step-request">
-                    <a href="#">
+                    <a href="#timeline-30">
                         <div class="ti-step-dot"></div>
                     </a>
                     <div class="ti-step-label">
@@ -848,8 +864,18 @@
                     </div>
                     <div class="ti-step-date">on 23 Jul 2026<span aria-hidden="true" class="ti-footnote">b</span></div>
                 </div>
+                <!-- Conditional: revealed by setting f2RfiReceived = true in the script below -->
+                <div class="ti-step" id="f2-ti-step-rfi" hidden>
+                    <a href="#timeline-31">
+                        <div class="ti-step-dot"></div>
+                    </a>
+                    <div class="ti-step-label">
+                        Request for information
+                    </div>
+                    <div class="ti-step-date" id="f2-ti-date-rfi">TBD</div>
+                </div>
                 <div class="ti-step" id="f2-ti-step-receipt">
-                    <a href="#">
+                    <a href="#timeline-32">
                         <div class="ti-step-dot"></div>
                     </a>
                     <div class="ti-step-label">
@@ -858,7 +884,7 @@
                     <div class="ti-step-date">TBD</div>
                 </div>
                 <div class="ti-step" id="f2-ti-step-deadline">
-                    <a href="#">
+                    <a href="#timeline-33">
                         <div class="ti-step-dot"></div>
                     </a>
                     <div class="ti-step-label">
@@ -2249,17 +2275,14 @@
     }
 
 
-    // Highlight current step with legend-aligned colours
+    // Highlight steps with legend-aligned colours.
+    // 'completed' => teal, 'current' => orange, 'refused' => crimson,
+    // null/omitted => no class => future/pending (grey)
     function markStep(id, state) {
         var step = document.getElementById(id);
         if (!step) return;
-        step.classList.remove('completed', 'current');
-        if (state === 'completed') {
-            step.classList.add('completed');  // teal
-        } else if (state === 'current') {
-            step.classList.add('current');    // orange
-        }
-        // no class => future/pending (gray)
+        step.classList.remove('completed', 'current', 'refused');
+        if (state) step.classList.add(state);
     }
 
     // Reset all steps
@@ -2267,11 +2290,11 @@
         .forEach(function(id) { markStep(id, null); });
 
     if (today >= decisionDate) {
-        // Decision received — all steps complete
+        // Decision received — and that decision was the refusal of 25 Feb 2026
         markStep('ti-step-request', 'completed');
         markStep('ti-step-delivery', 'completed');
         markStep('ti-step-receipt', 'completed');
-        markStep('ti-step-deadline', 'completed');
+        markStep('ti-step-deadline', 'refused');
     } else if (today < deliveryDate) {
         // CNF request sent by Tribunal, applicant preparing reply
         markStep('ti-step-request', 'current');
@@ -2286,6 +2309,44 @@
         markStep('ti-step-receipt', 'completed');
         markStep('ti-step-deadline', 'current');
     }
+
+
+    // ── File 2 infographic ──────────────────────────────────────────────
+    // Fill these in as the process unfolds; null = not yet reached.
+    var f2DocsDate        = new Date(2026, 4, 29); // 29 May 2026 — acquisition complete
+    var f2RfiReceived     = false;                 // flip to true if the Tribunal issues an RFI
+    var f2RfiAnsweredDate = null;                  // date our RFI reply was delivered
+    var f2RecepisseDate   = null;                  // TBD
+    var f2DecisionDate    = null;                  // TBD
+    [f2DocsDate, f2RfiAnsweredDate, f2RecepisseDate, f2DecisionDate]
+        .forEach(function (d) { if (d) d.setHours(0, 0, 0, 0); });
+
+    function reached(d) { return !!d && today >= d; }
+
+    var f2Steps = [
+        { id: 'f2-ti-step-docs',     done: reached(f2DocsDate) },
+        { id: 'f2-ti-step-request',  done: reached(f2ReceivedDate) },
+        { id: 'f2-ti-step-rfi',      done: reached(f2RfiAnsweredDate), skip: !f2RfiReceived },
+        { id: 'f2-ti-step-receipt',  done: reached(f2RecepisseDate) },
+        { id: 'f2-ti-step-deadline', done: reached(f2DecisionDate) }
+    ];
+
+    // Sequential chain: everything done is teal, the first outstanding step is the
+    // one we are actively awaiting (orange), everything beyond it stays grey.
+    var f2FoundPending = false;
+    f2Steps.forEach(function (s) {
+        var el = document.getElementById(s.id);
+        if (s.skip) { if (el) el.hidden = true; return; }
+        if (el) el.hidden = false;
+        if (s.done) {
+            markStep(s.id, 'completed');
+        } else if (!f2FoundPending) {
+            markStep(s.id, 'current');
+            f2FoundPending = true;
+        } else {
+            markStep(s.id, null);
+        }
+    });
 
 
     // Show/hide "Back to Top" button based on header visibility
