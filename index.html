@@ -771,7 +771,7 @@
                     <div class="ti-step-label">
                         Document acquisition
                     </div>
-                    <div class="ti-step-date">Began 2 Mar 2026</div>
+                    <div class="ti-step-date">2 Mar - 29 May 2026</div>
                 </div>
                 <div class="ti-step" id="f2-ti-step-request">
                     <a href="#">
@@ -802,7 +802,7 @@
                 </div>
             </div>
             <div class="ti-footer">
-                <span aria-hidden="true" class="ti-footnote">a</span> Currently <span class="ti-highlight" id="f2-days-since-refusal"></span> since File 1 refusal ·
+                <span aria-hidden="true" class="ti-footnote">a</span> Currently <span class="ti-highlight" id="f2-days-since-received"></span> since File 2 received by Tribunal ·
                 <span aria-hidden="true" class="ti-footnote">b</span> Submitted before 25 Aug 2026 so that File 1 remains highly easily accessible to the Tribunal for reference ·
                 <span aria-hidden="true" class="ti-footnote">c</span> TBD days after Demande receipt ·
                 <span aria-hidden="true" class="ti-footnote">d</span> Expected by TBD (6 months from Récépissé) with up to two 6‑month extensions.
@@ -2133,11 +2133,13 @@
         return d.toLocaleDateString(undefined, options);
     }
 
-    // Show days since refusal (25 Feb 2026) in the File 2 infographic footer
-    var f2DaysEl = document.getElementById('f2-days-since-refusal');
+    // Show days since File 2 was received by the Tribunal (23 Jul 2026)
+    var f2ReceivedDate = new Date(2026, 6, 23); // 23 Jul 2026 (month 0-based)
+    f2ReceivedDate.setHours(0, 0, 0, 0);
+    var f2DaysEl = document.getElementById('f2-days-since-received');
     if (f2DaysEl) {
-        var diffRefusalDays = Math.round((today - decisionDate) / msPerDay);
-        f2DaysEl.textContent = diffRefusalDays + ' day' + (diffRefusalDays === 1 ? '' : 's');
+        var diffReceivedDays = Math.round((today - f2ReceivedDate) / msPerDay);
+        f2DaysEl.textContent = diffReceivedDays + ' day' + (diffReceivedDays === 1 ? '' : 's');
     }
 
 
