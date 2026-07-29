@@ -522,11 +522,33 @@
             color: var(--color-slate-500);
         }
 
+        /* Outcome is a single terminal state per file, not a tally — it lives in
+           .outcome-row above the grid, so the grid holds only countable statuses. */
+        .outcome-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .outcome-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* .timeline-status carries a card-layout bottom margin; cancel it in the flex row */
+        .outcome-row .timeline-status {
+            margin-bottom: 0;
+        }
+
         .summary-stats {
             display: grid;
-            /* 105px lets all eight statuses sit on one row at desktop width
-               (1000px container - 44px padding/border = 956px; 8x105 + 7x15 = 945px) */
-            grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+            /* Six countable statuses at desktop width
+               (1000px container - 44px padding/border = 956px; 6x140 + 5x15 = 915px) */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
@@ -2182,9 +2204,16 @@
                 <div class="stat-number" id="days-until-deadline"></div>
                 <div class="stat-label">since original application was received by the Paris Tribunal</div>
             </div>
-            <p>This application required multiple steps, including communicating with the Paris Tribunal and systematically contacting multiple municiple, state and national authorities in Italy, France, and Canada to gather the required documentation. Below is a count of the steps by status, split by application file. Labels match the colour key above. </p>
+            <p>This application required multiple steps, including communicating with the Paris Tribunal and systematically contacting multiple municiple, state and national authorities in Italy, France, and Canada to gather the required documentation. Below is each file's outcome, followed by a count of its steps by status. Tile labels match the colour key above. </p>
 
-            <h3>File 1 — refused 25 Feb 2026</h3>
+            <h3>File 1</h3>
+            <div class="outcome-row">
+                <span class="outcome-label">Outcome</span>
+                <span class="timeline-status status-refused">✗ Refused · 25 Feb 2026</span>
+            </div>
+            <!-- Counts only. The Approved/Refused statuses are terminal outcomes, not tallies,
+                 so they appear in the colour key and in .outcome-row above — never as a tile.
+                 The legend therefore has 8 entries while this grid has 6; that is intended. -->
             <div class="summary-stats">
                 <div class="stat-box">
                     <div class="stat-number" id="f1-count-completed"></div>
@@ -2210,17 +2239,13 @@
                     <div class="stat-number" id="f1-count-pending"></div>
                     <div class="stat-label">Pending / Future Action</div>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="f1-count-refused"></div>
-                    <div class="stat-label">Refused</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="f1-count-approved"></div>
-                    <div class="stat-label">Approved / Granted</div>
-                </div>
             </div>
 
-            <h3>File 2 — in progress</h3>
+            <h3>File 2</h3>
+            <div class="outcome-row">
+                <span class="outcome-label">Outcome</span>
+                <span class="timeline-status status-pending" id="f2-outcome-badge">⌛ Awaiting decision</span>
+            </div>
             <div class="summary-stats">
                 <div class="stat-box">
                     <div class="stat-number" id="f2-count-completed"></div>
@@ -2245,14 +2270,6 @@
                 <div class="stat-box">
                     <div class="stat-number" id="f2-count-pending"></div>
                     <div class="stat-label">Pending / Future Action</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="f2-count-refused"></div>
-                    <div class="stat-label">Refused</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="f2-count-approved"></div>
-                    <div class="stat-label">Approved / Granted</div>
                 </div>
             </div>
         </div>
@@ -2292,7 +2309,9 @@
     [['f1', '.timeline:not(.timeline-f2)'], ['f2', '.timeline-f2']].forEach(function (pair) {
         var root = document.querySelector(pair[1]);
         if (!root) return;
-        ['completed', 'delivered', 'enroute', 'awaiting', 'closed', 'approved', 'refused', 'pending'].forEach(function (key) {
+        // Countable statuses only — 'approved'/'refused' are terminal outcomes, reported
+        // by the .outcome-row pill rather than tallied.
+        ['completed', 'delivered', 'enroute', 'awaiting', 'closed', 'pending'].forEach(function (key) {
             var cls = (key === 'delivered') ? 'delivery' : key; // count id says "delivered", class is "delivery"
             var el = document.getElementById(pair[0] + '-count-' + key);
             if (el) el.textContent = root.querySelectorAll('.timeline-item.' + cls).length;
@@ -2403,6 +2422,22 @@
             markStep(s.id, null);
         }
     });
+
+    // File 2's Outcome pill in the Progress Summary — driven by the same f2Outcome flag,
+    // so recording the decision in one place updates the dot, item 33 and this pill.
+    var f2OutcomeEl = document.getElementById('f2-outcome-badge');
+    if (f2OutcomeEl) {
+        // Gate on the same reached() test the final dot uses, so a decision recorded with a
+        // future date doesn't have the pill announce an outcome the infographic still shows
+        // as pending. A dateless outcome is trusted as already in effect.
+        var decided = f2Outcome && (!f2DecisionDate || reached(f2DecisionDate));
+        var oc = decided ? { approved: ['status-approved', '✓ Approved'],
+                             refused:  ['status-refused',  '✗ Refused'] }[f2Outcome] : null;
+        var ocText = oc ? oc[1] : '⌛ Awaiting decision';
+        if (oc && f2DecisionDate) ocText += ' · ' + formatPhaseDate(f2DecisionDate);
+        f2OutcomeEl.className = 'timeline-status ' + (oc ? oc[0] : 'status-pending');
+        f2OutcomeEl.textContent = ocText;
+    }
 
 
     // Show/hide "Back to Top" button based on header visibility
