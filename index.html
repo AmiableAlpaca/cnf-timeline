@@ -17,7 +17,8 @@
             --color-teal-600: rgba(29, 116, 128, 1);
             --color-orange-500: rgba(168, 75, 47, 1);
             --color-purple-500: rgba(128, 90, 213, 1);
-            --color-green-600: rgb(0, 150, 77); /* En route */
+            --color-green-500: rgb(0, 200, 83); /* Approved — bright green, reserved for a granted CNF */
+            --color-amber-500: rgba(214, 158, 46, 1); /* En Route — moved off green so green means Approved only */
             --color-blue-500: rgba(37, 99, 235, 1);
             --color-red-600: rgba(196, 30, 58, 1); /* Refused — crimson, kept clear of the burnt-sienna orange-500 */
         }
@@ -158,11 +159,15 @@
         }
 
         .timeline-item.enroute .timeline-marker {
-            background: var(--color-green-600);
+            background: var(--color-amber-500);
         }
 
         .timeline-item.delivery .timeline-marker {
             background: var(--color-purple-500);
+        }
+
+        .timeline-item.approved .timeline-marker {
+            background: var(--color-green-500);
         }
 
         .timeline-item.refused .timeline-marker {
@@ -198,11 +203,15 @@
         }
 
         .timeline-item.enroute .timeline-content {
-            border-left-color: var(--color-green-600);
+            border-left-color: var(--color-amber-500);
         }
 
         .timeline-item.delivery .timeline-content {
             border-left-color: var(--color-purple-500);
+        }
+
+        .timeline-item.approved .timeline-content {
+            border-left-color: var(--color-green-500);
         }
 
         .timeline-item.refused .timeline-content {
@@ -277,14 +286,20 @@
         }
 
         .status-enroute {
-            background: rgba(0, 230, 118, 0.15);
-            color: var(--color-green-600);
+            background: rgba(214, 158, 46, 0.15);
+            color: var(--color-amber-500);
             text-transform: uppercase;
         }
 
         .status-delivery {
             background: rgba(128, 90, 213, 0.15);
             color: var(--color-purple-500);
+            text-transform: uppercase;
+        }
+
+        .status-approved {
+            background: rgba(0, 200, 83, 0.15);
+            color: var(--color-green-500);
             text-transform: uppercase;
         }
 
@@ -361,7 +376,7 @@
         .or-label {
             font-size: 11px;
             font-weight: 600;
-            color: var(--color-green-600);
+            color: var(--color-amber-500);
             text-transform: uppercase;
         }
 
@@ -392,16 +407,16 @@
         }
 
         .doc-link-enroute {
-            background: rgba(0, 230, 118, 0.15);
-            color: var(--color-green-600);
-            border-color: var(--color-green-600);
+            background: rgba(214, 158, 46, 0.15);
+            color: var(--color-amber-500);
+            border-color: var(--color-amber-500);
             font-weight: 600;
         }
 
         .doc-link-enroute:hover {
-            background: var(--color-green-600);
+            background: var(--color-amber-500);
             color: var(--color-white);
-            border-color: var(--color-green-600);
+            border-color: var(--color-amber-500);
         }
 
         .doc-main {
@@ -461,7 +476,7 @@
         }
 
         .dot-enroute {
-            background: var(--color-green-600);
+            background: var(--color-amber-500);
         }
 
         .dot-delivery {
@@ -471,6 +486,10 @@
         .dot-closed {
             background: transparent;
             border: 2px solid var(--color-slate-500);
+        }
+
+        .dot-approved {
+            background: var(--color-green-500);
         }
 
         .dot-refused {
@@ -505,8 +524,9 @@
 
         .summary-stats {
             display: grid;
-            /* 120px lets all seven statuses sit on one row at desktop width */
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            /* 105px lets all eight statuses sit on one row at desktop width
+               (1000px container - 44px padding/border = 956px; 8x105 + 7x15 = 945px) */
+            grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
@@ -639,10 +659,11 @@
             box-shadow: 0 0 0 2px rgba(33,128,141,0.15);
         }
 
-        /* These bars use a deliberate subset of the 7-status legend below —
+        /* These bars use a deliberate subset of the 8-status legend below —
            never a colour that contradicts it.
            teal = Completed/Responded, orange = Awaiting Response,
-           grey (default) = Pending/Future Action, crimson = Refused. */
+           grey (default) = Pending/Future Action,
+           bright green = Approved/Granted, crimson = Refused. */
 
         /* Teal = completed/responded */
         .ti-step.completed .ti-step-dot {
@@ -652,6 +673,11 @@
         /* Orange = current, awaiting next response/decision */
         .ti-step.current .ti-step-dot {
             background: var(--color-orange-500);
+        }
+
+        /* Bright green = approved / granted */
+        .ti-step.approved .ti-step-dot {
+            background: var(--color-green-500);
         }
 
         /* Crimson = refused */
@@ -747,6 +773,12 @@
             color: var(--color-slate-500);
             border: 1px solid var(--color-gray-300);
         }
+
+        .ti-badge-approved {
+            background: rgba(0, 200, 83, 0.15);
+            color: var(--color-green-500);
+            border: 1px solid var(--color-green-500);
+        }
         /* END NEW */
 
         /* ── Dark mode ─────────────────────────────────────────────────── */
@@ -762,7 +794,8 @@
                 --color-teal-600:     rgba(42,  147, 162, 1);
                 --color-orange-500:   rgba(210, 100,  65, 1);
                 --color-purple-500:   rgba(158, 118, 235, 1);
-                --color-green-600:    rgb(0,   185,  95);
+                --color-green-500:    rgb(0,   235, 120);
+                --color-amber-500:    rgba(240, 185,  75, 1);
                 --color-blue-500:     rgba(96,  165, 250, 1);
                 --color-red-600:      rgba(255, 110, 133, 1);
             }
@@ -811,11 +844,15 @@
             }
 
             .status-enroute {
-                background: rgba(0, 185, 95, 0.18);
+                background: rgba(240, 185, 75, 0.20);
             }
 
             .status-delivery {
                 background: rgba(158, 118, 235, 0.20);
+            }
+
+            .status-approved {
+                background: rgba(0, 235, 120, 0.18);
             }
 
             .status-refused {
@@ -823,7 +860,11 @@
             }
 
             .doc-link-enroute {
-                background: rgba(0, 185, 95, 0.15);
+                background: rgba(240, 185, 75, 0.16);
+            }
+
+            .ti-badge-approved {
+                background: rgba(0, 235, 120, 0.16);
             }
         }
         /* ── END Dark mode ──────────────────────────────────────────────── */
@@ -2122,6 +2163,10 @@
                 <span>Closed – No Result</span>
             </div>
             <div class="legend-item">
+                <div class="legend-dot dot-approved"></div>
+                <span>Approved / Granted</span>
+            </div>
+            <div class="legend-item">
                 <div class="legend-dot dot-refused"></div>
                 <span>Refused</span>
             </div>
@@ -2162,6 +2207,10 @@
                     <div class="stat-label">Closed – No Result</div>
                 </div>
                 <div class="stat-box">
+                    <div class="stat-number" id="f1-count-approved"></div>
+                    <div class="stat-label">Approved / Granted</div>
+                </div>
+                <div class="stat-box">
                     <div class="stat-number" id="f1-count-refused"></div>
                     <div class="stat-label">Refused</div>
                 </div>
@@ -2192,6 +2241,10 @@
                 <div class="stat-box">
                     <div class="stat-number" id="f2-count-closed"></div>
                     <div class="stat-label">Closed – No Result</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="f2-count-approved"></div>
+                    <div class="stat-label">Approved / Granted</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-number" id="f2-count-refused"></div>
@@ -2239,7 +2292,7 @@
     [['f1', '.timeline:not(.timeline-f2)'], ['f2', '.timeline-f2']].forEach(function (pair) {
         var root = document.querySelector(pair[1]);
         if (!root) return;
-        ['completed', 'delivered', 'enroute', 'awaiting', 'closed', 'refused', 'pending'].forEach(function (key) {
+        ['completed', 'delivered', 'enroute', 'awaiting', 'closed', 'approved', 'refused', 'pending'].forEach(function (key) {
             var cls = (key === 'delivered') ? 'delivery' : key; // count id says "delivered", class is "delivery"
             var el = document.getElementById(pair[0] + '-count-' + key);
             if (el) el.textContent = root.querySelectorAll('.timeline-item.' + cls).length;
@@ -2277,12 +2330,12 @@
 
 
     // Highlight steps with legend-aligned colours.
-    // 'completed' => teal, 'current' => orange, 'refused' => crimson,
-    // null/omitted => no class => future/pending (grey)
+    // 'completed' => teal, 'current' => orange, 'approved' => bright green,
+    // 'refused' => crimson, null/omitted => no class => future/pending (grey)
     function markStep(id, state) {
         var step = document.getElementById(id);
         if (!step) return;
-        step.classList.remove('completed', 'current', 'refused');
+        step.classList.remove('completed', 'current', 'approved', 'refused');
         if (state) step.classList.add(state);
     }
 
@@ -2319,6 +2372,7 @@
     var f2RfiAnsweredDate = null;                  // date our RFI reply was delivered
     var f2RecepisseDate   = null;                  // TBD
     var f2DecisionDate    = null;                  // TBD
+    var f2Outcome         = null;                  // 'approved' | 'refused' once the Tribunal decides
     [f2DocsDate, f2RfiAnsweredDate, f2RecepisseDate, f2DecisionDate]
         .forEach(function (d) { if (d) d.setHours(0, 0, 0, 0); });
 
@@ -2329,18 +2383,19 @@
         { id: 'f2-ti-step-request',  done: reached(f2ReceivedDate) },
         { id: 'f2-ti-step-rfi',      done: reached(f2RfiAnsweredDate), skip: !f2RfiReceived },
         { id: 'f2-ti-step-receipt',  done: reached(f2RecepisseDate) },
-        { id: 'f2-ti-step-deadline', done: reached(f2DecisionDate) }
+        // The final step reports the outcome rather than mere completion.
+        { id: 'f2-ti-step-deadline', done: reached(f2DecisionDate), state: f2Outcome }
     ];
 
-    // Sequential chain: everything done is teal, the first outstanding step is the
-    // one we are actively awaiting (orange), everything beyond it stays grey.
+    // Sequential chain: everything done is teal (or its own outcome colour), the first
+    // outstanding step is the one we are actively awaiting (orange), the rest stay grey.
     var f2FoundPending = false;
     f2Steps.forEach(function (s) {
         var el = document.getElementById(s.id);
         if (s.skip) { if (el) el.hidden = true; return; }
         if (el) el.hidden = false;
         if (s.done) {
-            markStep(s.id, 'completed');
+            markStep(s.id, s.state || 'completed');
         } else if (!f2FoundPending) {
             markStep(s.id, 'current');
             f2FoundPending = true;
